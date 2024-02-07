@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Korex Logistics</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../font/typicons.css">
+    <link rel="stylesheet" href="../../css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../../vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="icon" href="../../img/favi.jpg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+  </head>
+  <body>
+    <div class="container-scroller">
+   
+        <%- include ('../partials/adminNav'); -%>
+    
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_settings-panel.html -->
+        <div class="theme-setting-wrapper">
+          <div id="settings-trigger"><i class="typcn typcn-cog-outline"></i></div>
+          <div id="theme-settings" class="settings-panel">
+            <i class="settings-close typcn typcn-delete-outline"></i>
+            <p class="settings-heading">SIDEBAR SKINS</p>
+            <div class="sidebar-bg-options" id="sidebar-light-theme">
+              <div class="img-ss rounded-circle bg-light border mr-3"></div>
+              Light
+            </div>
+            <div class="sidebar-bg-options selected" id="sidebar-dark-theme">
+              <div class="img-ss rounded-circle bg-dark border mr-3"></div>
+              Dark
+            </div>
+            <p class="settings-heading mt-2">HEADER SKINS</p>
+            <div class="color-tiles mx-0 px-4">
+              <div class="tiles success"></div>
+              <div class="tiles warning"></div>
+              <div class="tiles danger"></div>
+              <div class="tiles primary"></div>
+              <div class="tiles info"></div>
+              <div class="tiles dark"></div>
+              <div class="tiles default border"></div>
+            </div>
+          </div>
+        </div>
+        <!-- partial -->
+        <!-- partial:partials/_sidebar.html -->
+        <%- include('../partials/adminSidebar'); -%>
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+
+              
+                <%- include (`../partials/messages`); -%>
+
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Shipping Information</h4>
+                        <p class="card-description">
+                          Edit Shipping Information
+                        </p>
+                       
+                        <form class="form-sample" action="/admin/editLabelHistoryPost/<%- editLabelInfo._id %>" method="post">
+
+                            <div class="form-group">
+                              <label for="exampleInputName1">Sender Name</label>
+                              <input type="text" class="form-control" name="senderName"
+                                value="<%- editLabelInfo.senderName %>" />
+                            </div>
+
+                            <div class="form-group">
+                              <label for="exampleInputEmail3">Sender Email</label>
+                              <input class="form-control"  type="email" name="senderEmail" 
+                              value="<%- editLabelInfo.senderEmail %>" />
+                            </div>
+    
+                            <div class="form-group">
+                              <label for="exampleInputEmail3">Sender Number</label>
+                              <input class="form-control"  type="text" name="senderNumber" 
+                              value="<%- editLabelInfo.senderNumber %>" />
+                            </div>
+    
+    
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Sender Address</label>
+                              <input class="form-control"  type="text" name="senderAddress"
+                               value="<%- editLabelInfo.senderAddress %>" />
+                            </div>
+
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Sender City</label>
+                              <input class="form-control"  type="text" name="senderCity"
+                               value="<%- editLabelInfo.senderCity %>"/>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Sender State</label>
+                              <input class="form-control"  type="text" name="senderState"
+                               value="<%- editLabelInfo.senderState %>"/>
+                            </div>
+    
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Recipient Name</label>
+                              <input class="form-control"  type="text" name="recipientName"  
+                              value="<%- editLabelInfo.recipientName %>" />
+                            </div>
+    
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Recipient Email</label>
+                              <input class="form-control"  type="text" name="recipientEmail" 
+                              value="<%- editLabelInfo.recipientEmail %>" />
+                            </div>
+    
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Recipient Number</label>
+                              <input type="text" class="form-control" name="recipientNumber" 
+                              value="<%- editLabelInfo.recipientNumber %>" />
+                            </div>
+
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Recipient Address</label>
+                              <input class="form-control"  type="text" name="recipientAddress"
+                               value="<%- editLabelInfo.recipientAddress %>" />
+                            </div>
+
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Recipient City</label>
+                              <input class="form-control"  type="text" name="recipientCity"
+                               value="<%- editLabelInfo.recipientCity %>"/>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Recipient State</label>
+                              <input class="form-control"  type="text" name="recipientState"
+                               value="<%- editLabelInfo.recipientState %>"/>
+                            </div>
+    
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Delivery Day</label>
+                              <% let deliveryDay=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"] %>
+                                <select class="form-control form-control-lg" name="deliveryDay" >
+                                    <% deliveryDay.forEach((deliveryDay)=> { %>
+                                        <option value="<%- deliveryDay %>" 
+                                            <% if (editLabelInfo.deliveryDay===deliveryDay) { %> selected<% }  %>>
+                                           <%- deliveryDay %>
+                                        </option>
+                                    <% }) %>
+                                  </select>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Delivery Date</label>
+                              <% let deliveryDate=["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"] %>
+                                <select class="form-control form-control-lg" name="deliveryDate" >
+                                    <% deliveryDate.forEach((deliveryDate)=> { %>
+                                        <option value="<%- deliveryDate %>" 
+                                            <% if (editLabelInfo.deliveryDate===deliveryDate) { %> selected<% }  %>>
+                                           <%- deliveryDate %>
+                                        </option>
+                                    <% }) %>
+                                  </select>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Delivery Month</label>
+                              <% let deliveryMonth=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"] %>
+                                <select class="form-control form-control-lg" name="deliveryMonth">
+                                    <% deliveryMonth.forEach((deliveryMonth)=> { %>
+                                        <option value="<%- deliveryMonth %>" 
+                                            <% if (editLabelInfo.deliveryMonth===deliveryMonth) { %> selected<% }  %>>
+                                           <%- deliveryMonth %>
+                                        </option>
+                                    <% }) %>
+                                  </select>
+                            </div>
+
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Delivery Time</label>
+                              <input class="form-control" type="text" name="deliveryTime" placeholder="Input format 05:00 pm" value="<%- editLabelInfo.deliveryTime %>" required="required" />
+                            </div>
+
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Delivery Year</label>
+                              <% let deliveryYear=["2024","2025","2026","2027","2028","2029","2030","2031","2032","2033"] %>
+                                <select class="form-control form-control-lg" name="deliveryYear">
+                                    <% deliveryYear.forEach((deliveryYear)=> { %>
+                                        <option value="<%- deliveryYear %>" 
+                                            <% if (editLabelInfo.deliveryYear===deliveryYear) { %> selected<% }  %>>
+                                           <%- deliveryYear %>
+                                        </option>
+                                    <% }) %>
+                                  </select>
+                            </div>
+
+                           
+
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Select Shipping Status</label>
+                              <select class="form-control" name="statusCode" 
+                                 required="required" data-validation-required-message="Please select a status">
+                                  <option value=""></option>
+                                 <option value="ShippingLabelCreated"
+                                     <%= editLabelInfo.statusMessage === 'ShippingLabelCreated' ? 'selected' : '' %>>Shipping Label Created
+                                  </option>
+                                  <option value="InTransit" 
+                                     <%= editLabelInfo.statusMessage === 'InTransit' ? 'selected' : '' %>>In Transit
+                                  </option>
+                                  <option value="OutForDelivery"
+                                     <%= editLabelInfo.statusMessage === 'OutForDelivery' ? 'selected' : '' %>>Out For Delivery
+                                  </option>
+                                  <option value="DelayNotification"
+                                    <%= editLabelInfo.statusMessage === 'DelayNotification' ? 'selected' : '' %>>Delay Notification
+                                  </option>
+                                  <option value="Cancelled"
+                                     <%= editLabelInfo.statusMessage === 'Cancelled' ? 'selected' : '' %>>Cancelled
+                                  </option>
+                                  <option value="ReturnShipment"
+                                     <%= editLabelInfo.statusMessage === 'ReturnShipment' ? 'selected' : '' %>>Return Shipment
+                                  </option>
+                                  <option value="Delivered"
+                                     <%= editLabelInfo.statusMessage === 'Delivered' ? 'selected' : '' %>>Delivered
+                                  </option>
+                              </select>
+                            </div>
+                          
+                            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                            <button class="btn btn-light">Cancel</button>
+                          </form>
+
+                      </div>
+                    </div>
+                  </div>
+
+         </div>
+         <%- include('../partials/adminFooter'); -%>
+           
+     
+        </div>
+   
+      </div>
+  
+    </div>
+
+
+  </body>
+</html>

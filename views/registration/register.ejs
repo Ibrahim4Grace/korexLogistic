@@ -1,0 +1,268 @@
+	<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<title>Korex Logistics Company</title>
+<meta charset="UTF-8">
+<meta name="description" content="Korex logistic ">
+<meta name="keywords" content="logistic,Korex,korexlogistic,korex,shippingcompany,shipping">
+<meta name="author" content="Agboola Akorede Ibrahim">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Favicon -->
+<link href="../img/favi.jpg" rel="icon">
+
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+<!-- Customized css Stylesheet -->
+<link href="../css/style.css" rel="stylesheet">
+<link href="../css/login.css" rel="stylesheet">
+<link href="../css/labelRegister.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous" />
+
+
+</head>
+
+<body>
+                        <!-- Topbar Start -->
+
+                        <%- include (`../partials/header`); -%>
+                       <!-- Topbar End -->
+
+
+<!-- Header Start -->
+<div class="jumbotron jumbotron-fluid mb-5">
+<div class="container text-center py-5">
+    <h1 class="text-white display-3">Registeration</h1>
+    <div class="d-inline-flex align-items-center text-white">
+        <p class="m-0"><a class="text-white" href="/">Home</a></p>
+        <i class="fa fa-circle px-3"></i>
+        <p class="m-0">Registeration</p>
+    </div>
+</div>
+</div>
+<!-- Header End -->
+
+
+      <div class="container-scroller">
+        <div class="col-12 grid-margin">
+          <div class="card">
+            <div class="card-body">
+
+              <%- include (`../partials/messages`); -%>
+              <div class="container-fluid">
+                <div class="row justify-content-center">
+                  <div class="col-11 col-sm-10 col-md-10 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+                    <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                      <h2 id="heading">Sign Up Your User Account</h2>
+                      <p>Fill all form field to go to next step</p>
+                      
+                      <form id="msform" class="form-sample" action="/registration/registerPost" method="post" enctype="multipart/form-data">
+                        <!-- progressbar -->
+                        <ul id="progressbar">
+                          <li class="active" id="account"><strong>Account</strong></li>
+                          <li id="personal"><strong>Personal</strong></li>
+                          <li id="payment"><strong>Image</strong></li>
+                          <li id="confirm"><strong>Finish</strong></li>
+                        </ul>
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div> <br> 
+
+                        <!-- fieldsets -->
+                      
+                        <fieldset>
+                          <div class="form-card">
+                            <div class="row">
+                              <div class="col-7">
+                                <h2 class="fs-title">Personal Information:</h2>
+                              </div>
+                              <div class="col-5">
+                                <h2 class="steps">Step 1 - 4</h2>
+                              </div>
+                            </div> 
+                            <label class="fieldlabels">Full Name: *</label> 
+                            <input type="text" name="senderName" placeholder="Full Name" required  
+                            value="<%= typeof senderName != 'undefined' ? senderName : '' %>"/> 
+
+                            <label class="fieldlabels">Gender: *</label> 
+                            <% let selectGender=["Male", "Female"] %>
+                            <select class="form-control" name="senderGender" required
+                              value="<%= typeof senderGender != 'undefined' ? senderGender : '' %>">
+                              <option value="">Select Gender</option>
+                              <% selectGender.forEach((so)=> { %>
+                                <option value="<%- so %>"><%- so %></option>
+                              <% }) %>
+                            </select>
+
+                            <label class="fieldlabels">Date of Birth: *</label> 
+                            <input type="date" name="senderDob"  placeholder="dd/mm/yyyy" required
+                            value="<%= typeof senderDob != 'undefined' ? senderDob : '' %>"/>
+
+                            <label class="fieldlabels">Contact No.: *</label>
+                             <input type="text" name="senderNumber"  placeholder="Contact No." required
+                             value="<%= typeof senderNumber != 'undefined' ? senderNumber : '' %>"/>
+
+                             <label class="fieldlabels">Membership: *</label> 
+                             <% let selectMembership=["Individual", "Business"] %>
+                             <select class="form-control" name="selectMembership"  required
+                             value="<%= typeof selectMembership != 'undefined' ? selectMembership : '' %>">
+                               <option value="">Select Membership</option>
+                               <% selectMembership.forEach((so)=> { %>
+                                 <option value="<%- so %>"><%- so %></option>
+                               <% }) %>
+                             </select>
+ 
+                             <label class="fieldlabels">Email: *</label> 
+                             <input type="email" name="senderEmail" placeholder="Email Id" value="<%= typeof senderEmail != 'undefined' ? senderEmail : '' %>" required/>
+
+                             <input type="hidden" name="senderRole" value="User"/>
+
+                          </div> 
+                          <input type="button" name="next" class="next action-button" value="Next" /> 
+                          
+                        </fieldset>
+
+                        <fieldset>
+                          <div class="form-card">
+                            <div class="row">
+                              <div class="col-7">
+                                <h2 class="fs-title">Account Information:</h2>
+                              </div>
+                              <div class="col-5">
+                                <h2 class="steps">Step 2 - 4</h2>
+                              </div>
+                            </div> 
+
+                            <label class="fieldlabels">Username: *</label> 
+                            <input type="text" name="username" placeholder="UserName"  
+                            value="<%= typeof username != 'undefined' ? username : '' %>" required/>
+                            
+                            <label class="fieldlabels">Password: *</label> 
+                            <input type="password" name="password" placeholder="Password" required
+                            value="<%= typeof password != 'undefined' ? password : '' %>"/>
+                            
+                            <label class="fieldlabels">Confirm Password: *</label> 
+                            <input type="password" name="password2" placeholder="Confirm Password"
+                            value="<%= typeof password2 != 'undefined' ? password2 : '' %>" required/>
+
+                            <label class="fieldlabels">Home Address: *</label> 
+                            <input type="text" name="senderAddress" placeholder="Home Address" required
+                            value="<%= typeof senderAddress != 'undefined' ? senderAddress : '' %>"/>
+
+                            <label class="fieldlabels">City: *</label> 
+                            <input type="text" name="senderCity" placeholder="City" required
+                             value="<%= typeof senderCity != 'undefined' ? senderCity : '' %>"/>
+
+                            <label class="fieldlabels">State: *</label> 
+                            <input type="text" name="senderState" placeholder="State" required
+                            value="<%= typeof senderState != 'undefined' ? senderState : '' %>"/>
+
+                            <label class="fieldlabels">Post Code: *</label> 
+                            <input type="text" name="postCode" placeholder="Enter Postcode" required
+                            name="postCode" value="<%= typeof postCode != 'undefined' ? postCode : '' %>"/>
+
+                            <label class="fieldlabels">Country: *</label> 
+                            <% let country=["Nigeria"] %>
+                            <select class="form-control" name="country" required 
+                            value="<%= typeof country != 'undefined' ? country : '' %>">
+                              <option value="">Select Country</option>
+                              <% country.forEach((so)=> { %>
+                                <option value="<%- so %>"><%- so %></option>
+                              <% }) %>
+                            </select>
+
+                          </div> 
+                          <input type="button" name="next" class="next action-button" value="Next" />
+                          <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                        </fieldset>
+
+                        <fieldset>
+                          <div class="form-card">
+                            <div class="row">
+                              <div class="col-7">
+                                <h2 class="fs-title">Image Upload:</h2>
+                              </div>
+                              <div class="col-5">
+                                <h2 class="steps">Step 3 - 4</h2>
+                              </div>
+                            </div> 
+
+                            <label class="fieldlabels">Upload Your Photo:</label> 
+                            <input type="file" name="image" accept="image/*" required
+                             value="<%= typeof image != 'undefined' ? image : '' %>"/>
+
+                           
+                            
+                          </div> 
+                          <input type="submit" name="next" class="next action-button" value="Submit" /> 
+                          <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                        </fieldset>
+
+                        <fieldset>
+                          <div class="form-card">
+                            <div class="row">
+                              <div class="col-7">
+                                <h2 class="fs-title">Finish:</h2>
+                              </div>
+                              <div class="col-5">
+                                <h2 class="steps">Step 4 - 4</h2>
+                              </div>
+                            </div> <br><br>
+                            <% if (errors.length === 0) { %>
+                              <h2 class="purple-text text-center"><strong>SUCCESS !</strong></h2> <br>
+                              <div class="row justify-content-center">
+                                  <div class="col-3"> <img src="https://i.imgur.com/GwStPmg.png" class="fit-image"> </div>
+                              </div> <br><br>
+                              <div class="row justify-content-center">
+                                  <div class="col-7 text-center">
+                                      <h5 class="purple-text text-center">You Have Successfully Signed Up. You Can Login Now</h5>
+                                  </div>
+                              </div>
+                          <% } else { %>
+                            <h2 class="error-text text-center"><strong>Error:</strong></h2> <br>
+                            <div class="row justify-content-center">
+                                <div class="col-7 text-center">
+                                    <% errors.forEach(function(error) { %>
+                                        <p class="error-message"><%= error.msg %></p>
+                                    <% }); %>
+                                </div>
+                            </div>
+                        <% } %>
+                         
+                          </div>
+                        </fieldset>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>                                        
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+<!-- Footer Start -->
+<%- include (`../partials/footer`); -%>
+<!-- Footer End -->
+
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+
+
+</body>
+
+</html>

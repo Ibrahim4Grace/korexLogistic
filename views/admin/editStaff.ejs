@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Korex Logistics</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../font/typicons.css">
+    <link rel="stylesheet" href="../../css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../../vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="icon" href="../../img/favi.jpg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+  </head>
+  <body>
+    <div class="container-scroller">
+   
+        <%- include ('../partials/adminNav'); -%>
+    
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_settings-panel.html -->
+        <div class="theme-setting-wrapper">
+          <div id="settings-trigger"><i class="typcn typcn-cog-outline"></i></div>
+          <div id="theme-settings" class="settings-panel">
+            <i class="settings-close typcn typcn-delete-outline"></i>
+            <p class="settings-heading">SIDEBAR SKINS</p>
+            <div class="sidebar-bg-options" id="sidebar-light-theme">
+              <div class="img-ss rounded-circle bg-light border mr-3"></div>
+              Light
+            </div>
+            <div class="sidebar-bg-options selected" id="sidebar-dark-theme">
+              <div class="img-ss rounded-circle bg-dark border mr-3"></div>
+              Dark
+            </div>
+            <p class="settings-heading mt-2">HEADER SKINS</p>
+            <div class="color-tiles mx-0 px-4">
+              <div class="tiles success"></div>
+              <div class="tiles warning"></div>
+              <div class="tiles danger"></div>
+              <div class="tiles primary"></div>
+              <div class="tiles info"></div>
+              <div class="tiles dark"></div>
+              <div class="tiles default border"></div>
+            </div>
+          </div>
+        </div>
+        <!-- partial -->
+        <!-- partial:partials/_sidebar.html -->
+        <%- include('../partials/adminSidebar'); -%>
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+
+              
+                <%- include (`../partials/messages`); -%>
+
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+                      <div class="card-body">
+                        <h4 class="card-title">Customer Form</h4>
+                        <p class="card-description">
+                          Edit Customer Information
+                        </p>
+                       
+                        <form class="form-sample" action="/admin/editStaffProfilePost/<%- editMyStaff._id %>" method="post">
+
+                            <div class="form-group">
+                              <label for="exampleInputName1">Staff Name</label>
+                              <input type="text" class="form-control" name="staffName"
+                                value="<%- editMyStaff.staffName %>" />
+                            </div>
+
+                            <div class="form-group">
+                              <label for="exampleInputEmail3">Staff Date Of Birth</label>
+                              <input class="form-control"  type="date" name="staffDob" 
+                              value="<%- editMyStaff.staffDob %>" />
+                            </div>
+    
+                            <div class="form-group">
+                              <label for="exampleInputEmail3">Staff Email</label>
+                              <input class="form-control"  type="email" name="staffEmail" 
+                              value="<%- editMyStaff.staffEmail %>" />
+                            </div>
+    
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Staff Number</label>
+                              <input class="form-control"  type="text" name="staffNumber"
+                               value="<%- editMyStaff.staffNumber %>" />
+                            </div>
+    
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Staff Position</label>
+                              <input class="form-control"  type="text" name="staffPosition"  
+                              value="<%- editMyStaff.staffPosition %>" />
+                            </div>
+    
+                      
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Staff Address</label>
+                              <input type="text" class="form-control" name="staffAddress" 
+                              value="<%- editMyStaff.staffAddress %>" />
+                            </div>
+    
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Staff City</label>
+                              <input type="text" class="form-control" name="staffCity" 
+                              value="<%- editMyStaff.staffCity %>" />
+                            </div>
+    
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Staff State</label>
+                              <input type="text" class="form-control" name="staffState"
+                               value="<%- editMyStaff.staffState %>" />
+                            </div>
+    
+                            <div class="form-group">
+                              <label for="exampleInputCity1">Emergency Name</label>
+                              <input type="text" class="form-control" name="staffEmergencyName" 
+                              value="<%- editMyStaff.staffEmergencyName %>" />
+                            </div>
+    
+                            <div class="form-group">
+                                <label for="exampleInputCity1">Emergency Number</label>
+                                <input type="text" class="form-control" name="staffEmergencyNumber" 
+                                value="<%- editMyStaff.staffEmergencyNumber %>" />
+                            </div>
+                         
+    
+                            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                            <button class="btn btn-light">Cancel</button>
+                          </form>
+
+                      </div>
+                    </div>
+                  </div>
+
+         </div>
+         <%- include('../partials/adminFooter'); -%>
+           
+     
+        </div>
+   
+      </div>
+  
+    </div>
+
+
+  </body>
+</html>

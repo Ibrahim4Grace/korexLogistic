@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Korex Logistics Company</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Korex logistic ">
+    <meta name="keywords" content="logistic,Korex,korexlogistic,korex,shippingcompany,shipping">
+    <meta name="author" content="Agboola Akorede Ibrahim">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="../img/favi.jpg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+       <!-- Customized css Stylesheet -->
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/loginform.css" rel="stylesheet">
+
+    
+    
+</head>
+
+<body>
+
+
+    <!-- Header Start -->
+    <div class="jumbotron jumbotron-fluid mb-5">
+        <div class="container text-center py-5">
+            <h1 class="text-white display-3" id="greeting"></h1>
+            
+        </div>
+    </div>
+    <!-- Header End -->
+ 
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-center auth px-0">
+                <div class="row w-100 mx-0">
+                    <div class="col-lg-4 mx-auto">
+                        <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+                            <%- include ('../partials/messages'); -%>
+                            
+                            <div class="brand-logo">
+                                <img src="../img/companyLogo.jpg" alt="logo">
+                            </div>
+                            <div id="greeting"></div>
+                            <script src="../js/admingreeting.js"></script>
+                 
+                            <h6 class="font-weight-light">Sign in to continue admin.</h6>
+                            <form class="pt-3" action="/admin/adminloginPagePost" method="post">
+                    
+                                <div class="form-group">
+                                    <input type="text" class="form-control form-control-lg" id="exampleInputusername" name="adminUsername" placeholder="Your Username" value="<%= typeof adminUsername != 'undefined' ? adminUsername : '' %>">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control form-control-lg" id="exampleInputPassword" name="adminPassword"   placeholder="Your Password" value="<%= typeof adminPassword != 'undefined' ? adminPassword : '' %>">
+                                </div>
+                    
+                                <div class="form-group">
+                                    <% let selectRole=["Admin" , "Editor"] %>
+                                    <select class="form-control form-control-lg" name="adminRole"
+                                           value="<%= typeof adminRole != 'undefined' ? adminRole : '' %>">
+                                         <option value="">Select Role</option>
+                                        <% selectRole.forEach((so)=> { %>
+                                            <option value="<%- so %>"><%- so %></option>
+                                        <% }) %>
+                                    </select>
+                                </div>
+
+                                
+                                <button type="submit" class="view-btn">
+                                    SIGN IN
+                                </button>
+                               
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        </div>
+    
+    </div>
+    
+   
+</body>
+
+</html>

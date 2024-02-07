@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Korex Hospital</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../font/typicons.css">
+    <link rel="stylesheet" href="../../css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../../vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="icon" href="../../img/favi.jpg">
+         <!-- Include Socket.IO scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+  </head>
+  <body>
+    
+        <%- include ('../partials/adminNav'); -%>
+
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_settings-panel.html -->
+        <div class="theme-setting-wrapper">
+          <div id="settings-trigger"><i class="typcn typcn-cog-outline"></i></div>
+          <div id="theme-settings" class="settings-panel">
+            <i class="settings-close typcn typcn-delete-outline"></i>
+            <p class="settings-heading">SIDEBAR SKINS</p>
+            <div class="sidebar-bg-options" id="sidebar-light-theme">
+              <div class="img-ss rounded-circle bg-light border mr-3"></div>
+              Light
+            </div>
+            <div class="sidebar-bg-options selected" id="sidebar-dark-theme">
+              <div class="img-ss rounded-circle bg-dark border mr-3"></div>
+              Dark
+            </div>
+            <p class="settings-heading mt-2">HEADER SKINS</p>
+            <div class="color-tiles mx-0 px-4">
+              <div class="tiles success"></div>
+              <div class="tiles warning"></div>
+              <div class="tiles danger"></div>
+              <div class="tiles primary"></div>
+              <div class="tiles info"></div>
+              <div class="tiles dark"></div>
+              <div class="tiles default border"></div>
+            </div>
+          </div>
+        </div>
+        <!-- partial -->
+     
+        <%- include('../partials/adminSidebar'); -%>
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+
+              
+                <%- include (`../partials/messages`); -%>
+
+                   
+          
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Label Information</h4>
+
+                        <ul class="v">
+                            
+                            <li><strong>Sender Name</strong></li>
+                            <p>
+                                <%= labelInfo.senderName%>
+                            </p>
+                            <li><strong>Sender Email</strong></li>
+                            <p>
+                                <%= labelInfo.senderEmail%>
+                            </p>
+                            <li><strong>Sender Number</strong></li>
+                            <p>
+                                <%= labelInfo.senderNumber%>
+                            </p>
+                            <li><strong>Membership</strong></li>
+                            <p>
+                                <%= labelInfo.selectMembership%>
+                            </p>
+                            <li><strong>Sender Address</strong></li>
+                            <p>
+                                <%=labelInfo.senderAddress%>
+                            </p>
+                            <li><strong>Sender City</strong></li>
+                            <p>
+                                <%=labelInfo.senderCity%>
+                            </p>
+                            <li><strong>Sender State</strong></li>
+                            <p>
+                                <%=labelInfo.senderState%>
+                            </p>
+                            <li><strong>Shipping Method</strong></li>
+                            <p>
+                                <%=labelInfo.shippingMethod%>
+                            </p>
+                            <li><strong>Recipient Name</strong></li>
+                            <p>
+                                <%=labelInfo.recipientName%>
+                            </p>
+                            <li><strong>Recipient Email</strong></li>
+                            <p>
+                                <%=labelInfo.recipientEmail%>
+                            </p>
+                            <li><strong>Recipient Number</strong></li>
+                            <p>
+                                <%=labelInfo.recipientNumber%>
+                            </p>
+                            <li><strong>Recipient Address</strong></li>
+                            <p>
+                                <%=labelInfo.recipientAddress%>
+                            </p>
+                            <li><strong>Recipient City</strong></li>
+                            <p>
+                                <%=labelInfo.recipientCity%>
+                            </p>
+                            <li><strong>Recipient State</strong></li>
+                            <p>
+                                <%=labelInfo.recipientState%>
+                            </p>
+                            <li><strong>Shipping Fees</strong></li>
+                            <p>
+                                <%=labelInfo.shippingAmount%>
+                            </p>
+                            <li><strong>Tracking ID</strong></li>
+                            <p>
+                                <%=labelInfo.trackingID%>
+                            </p>
+                            <li><strong>Delivery Day</strong></li>
+                            <p>
+                                <%=labelInfo.deliveryDay%>
+                            </p>
+                            <li><strong>Delivery Date</strong></li>
+                            <p>
+                                <%=labelInfo.deliveryDate%>
+                            </p>
+                            <li><strong>Delivery Month</strong></li>
+                            <p>
+                                <%=labelInfo.deliveryMonth%>
+                            </p>
+                            <li><strong>Delivery Time</strong></li>
+                            <p>
+                                <%=labelInfo.deliveryTime%>
+                            </p>
+                            <li><strong>Status Message</strong></li>
+                            <p>
+                                <%=labelInfo.statusMessage%>
+                            </p>
+                            <li><strong>Create Shipping date</strong></li>
+                            <p>
+                                <%=labelInfo.date_added.toLocaleString()%>
+                            </p>
+                        </ul>
+                        
+                        <div class="table-responsive pt-3">
+                        
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+    
+            <%- include('../partials/adminFooter'); -%>
+           
+        </div>
+    
+      </div>
+
+    </div>
+
+  </body>
+</html>

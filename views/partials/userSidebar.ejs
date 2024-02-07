@@ -1,0 +1,88 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item">
+        <div class="d-flex sidebar-profile">
+  
+          <div class="sidebar-profile-image">
+            <!-- User Image -->
+            <a href="/users/welcome">
+              <img src="data:<%= user.image.contentType %>;base64,<%= user.image.data.toString('base64') %>" alt="Image">
+            </a>  
+            <span class="sidebar-status-indicator"></span>
+          </div>
+  
+          <div class="sidebar-profile-name">
+            <p class="sidebar-name">
+              <%= user.senderName %>
+            </p>
+            <p class="sidebar-designation" id="greeting">
+              <script src="../js/greeting.js"></script>
+            </p>
+            
+          </div>
+        </div>
+        
+        <p class="sidebar-menu-title">Account Registration Date</p>
+        
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="typcn typcn-clipboard menu-icon"></i>
+          <span class="menu-title"><%= `${user.date_added.toLocaleString()}` %></span>
+         
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="typcn typcn-user menu-icon"></i>
+          <span class="menu-title">Username: <%= user.username %></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="typcn typcn-phone menu-icon"></i>
+          <span class="menu-title">Phone: <%= user.senderNumber %></span>
+          
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/welcome">
+          <i class="typcn typcn-device-desktop menu-icon"></i>
+          <span class="menu-title">Dashboard <span class="badge badge-primary ml-3">New</span></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/createLabel">
+          <i class="typcn typcn-book menu-icon"></i>
+          <span class="menu-title">Create Label</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/shippingHistory">
+          <i class="typcn typcn-briefcase menu-icon"></i>
+          <span class="menu-title">Shipping History</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/editInformation">
+          <i class="typcn typcn-image menu-icon"></i>
+          <span class="menu-title">Change Information</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/contactUs">
+          <i class="typcn typcn-messages menu-icon"></i>
+          <span class="menu-title">Contact Us</span>
+        </a>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link" href="/users/logout">
+          <i class="typcn typcn-power-outline menu-icon"></i>
+          <span class="menu-title">Logout</span>
+        </a>
+      </li>
+
+    </ul>
+   
+  </nav>

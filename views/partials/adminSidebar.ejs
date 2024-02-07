@@ -1,0 +1,143 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+        <li class="nav-item">
+            <div class="d-flex sidebar-profile">
+  
+                <div class="sidebar-profile-image">
+                    <img src="data:<%= admin.image.contentType %>;base64,<%= admin.image.data.toString('base64') %>" alt="Admin Image" >
+                    <span class="sidebar-status-indicator"></span>
+                </div>
+  
+                <div class="sidebar-profile-name">
+                    <p class="sidebar-name"> 
+                        <%= admin.adminFullName %>
+                    </p>
+                    <p class="sidebar-designation" id="greeting">
+                        <script src="../js/admingreeting.js"></script>
+                    </p>
+                </div>
+            </div>
+        
+            <p class="sidebar-menu-title">Dash menu </p>
+        
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/dashboard">
+                <i class="typcn typcn-device-desktop menu-icon"></i>
+                <span class="menu-title">Dashboard <span class="badge badge-primary ml-3">New</span></span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                <i class="typcn typcn-bell menu-icon"></i>
+                <span class="menu-title">Label Notification 
+                    <span id="notificationOutput" class="badge badge-primary ml-3"></span>
+                </span>
+               
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="/admin/newNotification">View New Notification</a></li>
+                  
+                </ul>
+            </div>
+        </li>
+     
+     
+
+        <% if (admin && admin.adminRole === 'Admin') { %>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="typcn typcn-user-add menu-icon"></i>
+                    <span class="menu-title">Admin Section</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="auth">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item"> <a class="nav-link" href="/admin/addAdmin">Add Admin</a></li>
+                        <li class="nav-item"> <a class="nav-link" href="/admin/allAdmin">All Admin</a></li>
+                    </ul>
+                </div>
+            </li>
+        <% } %>  
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                <i class="typcn typcn-group-outline menu-icon"></i>
+                <span class="menu-title">User Section</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="/admin/addNewUser">Add New User</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="/admin/allRegisteredUser">All Registered User</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                <i class="typcn typcn-clipboard menu-icon"></i>
+                <span class="menu-title">Label Section</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="/admin/createNewLabel">Create Label</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="/admin/labelHistory">Label History</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                <i class="typcn typcn-group-outline menu-icon"></i>
+                <span class="menu-title">Company Staff</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="/admin/korexStaff">Add New Staff</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="/admin/allKorexStaff">All Staff</a></li>
+                </ul>
+            </div>
+        </li>
+        
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+                <i class="typcn typcn-credit-card menu-icon"></i>
+                <span class="menu-title">Payment Section</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="/admin/staffPayment">Staff Payment</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="/admin/companyExpenses">Company Expenses</a></li>
+                </ul>
+            </div>
+        </li>
+        
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/contactAdmin">
+                <i class="typcn typcn-messages menu-icon"></i>
+              <span class="menu-title">Chat with customers</span>
+            </a>
+          </li>
+
+        <li class="nav-item">
+            <form class="nav-link" action="/admin/logout" method="post">
+              <i class="typcn typcn-cloud-storage-outline menu-icon"></i> 
+                <button type="submit" class="logouts-btns">
+                    <span class="menu-title">Logout</span>
+                </button>
+            </form>
+        </li>
+
+    </ul>
+   
+</nav>
+

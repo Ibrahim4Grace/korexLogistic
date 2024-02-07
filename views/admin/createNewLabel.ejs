@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Type" content="text/javascript">
+
+    <title>Korex Logistics</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../font/typicons.css">
+    <link rel="stylesheet" href="../css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../vertical-layout-light/style.css">
+    <link href="../css/labelRegister.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous" />
+    <!-- endinject -->
+    <link rel="icon" href="../img/favi.jpg">
+
+   <script src="https://js.paystack.co/v1/inline.js"></script>
+   <script src="../js/initializePayStack.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+                                                            
+  </head>
+  <body>
+    <div class="container-scroller">
+   
+        <%- include ('../partials/adminNav'); -%>
+    
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_settings-panel.html -->
+        <div class="theme-setting-wrapper">
+          <div id="settings-trigger"><i class="typcn typcn-cog-outline"></i></div>
+          <div id="theme-settings" class="settings-panel">
+            <i class="settings-close typcn typcn-delete-outline"></i>
+            <p class="settings-heading">SIDEBAR SKINS</p>
+            <div class="sidebar-bg-options" id="sidebar-light-theme">
+              <div class="img-ss rounded-circle bg-light border mr-3"></div>
+              Light
+            </div>
+            <div class="sidebar-bg-options selected" id="sidebar-dark-theme">
+              <div class="img-ss rounded-circle bg-dark border mr-3"></div>
+              Dark
+            </div>
+            <p class="settings-heading mt-2">HEADER SKINS</p>
+            <div class="color-tiles mx-0 px-4">
+              <div class="tiles success"></div>
+              <div class="tiles warning"></div>
+              <div class="tiles danger"></div>
+              <div class="tiles primary"></div>
+              <div class="tiles info"></div>
+              <div class="tiles dark"></div>
+              <div class="tiles default border"></div>
+            </div>
+          </div>
+        </div>
+        <!-- partial -->
+        <!-- partial:partials/_sidebar.html -->
+        <%- include('../partials/adminSidebar'); -%>
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+
+              
+                <%- include (`../partials/messages`); -%>
+
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="container-fluid">
+                            <div class="row justify-content-center">
+                                <div class="col-11 col-sm-10 col-md-10 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+                                    <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                                        <h2 id="heading">Create Your shipping Label</h2>
+                                        <p>Enter your (From) address and the recipient's (To) address.</p>
+                
+                                        <form id="msform" class="form-sample" action="/admin/createNewLabelPost" method="post">
+                                            <!-- progressbar -->
+                                            <ul id="progressbar">
+                                                <li class="active" id="account"><strong>Account</strong></li>
+                                                <li id="personal"><strong>Personal</strong></li>
+                                                <li id="payment"><strong>Payment</strong></li>
+                                                <li id="confirm"><strong>Finish</strong></li>
+                                            </ul>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                                    role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                            <br>
+                
+                                            <!-- fieldsets -->
+                                            <fieldset>
+                                                <div class="form-card">
+                                                    <div class="row">
+                                                        <div class="col-7">
+                                                            <h2 class="fs-title">From Sender Address</h2>
+                                                        </div>
+                                                        <div class="col-5">
+                                                            <h2 class="steps">Step 1 - 4</h2>
+                                                        </div>
+                                                    </div> 
+                                                    <label class="fieldlabels">Sender Name: *</label> 
+                                                    <input type="text" name="senderName" id="senderName"
+                                                    value="<%= typeof senderName != 'undefined' ? senderName : '' %>" required/>
+                                                                
+                                  
+                                                    <label class="fieldlabels">Sender Email: *</label> 
+                                                    <input type="email" name="senderEmail" id="senderEmail"
+                                                    value="<%= typeof senderEmail != 'undefined' ? senderEmail : '' %>" required />
+                                                                 
+                
+                                                    <label class="fieldlabels">Sender Number: *</label>
+                                                    <input type="text" name="senderNumber"
+                                                    value="<%= typeof senderNumber != 'undefined' ? senderNumber : '' %>" required />
+                                                                      
+                                                    <label class="fieldlabels">Membership: *</label> 
+                                                    <% let selectMembership = ["Individual", "Business"] %>
+                                                    <select  name="selectMembership" value="<%= typeof selectMembership !=     'undefined' ? selectMembership : '' %>" required >
+                                                        <option value="">Select Membership</option>
+                                                         <% selectMembership.forEach((so)=> { %>
+                                                            <option value="<%- so %>"><%- so %></option>
+                                                        <% }) %>
+                                                    </select>
+
+                                                    <label class="fieldlabels">Sender Address: *</label> 
+                                                    <input type="text" name="senderAddress" 
+                                                    value="<%= typeof senderAddress != 'undefined' ? senderAddress : '' %>" required />
+                
+                                                    <label class="fieldlabels">Sender City: *</label> 
+                                                    <input type="text" name="senderCity" 
+                                                    value="<%= typeof senderCity != 'undefined' ? senderCity : '' %>" required />
+                
+                                                                
+                                                    <label class="fieldlabels">Sender State: *</label> 
+                                                    <% let senderState = ["Abia", "Adamawa","Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti","Enugu", "Gombe",  "Imo",  "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi","Kogi", "Kwara", "Lagos", "Nasarawa","Niger","Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers","Sokoto", "Taraba","Yobe","Zamfara","Abuja"] %>
+                                                    <select  name="senderState" 
+                                                        value="<%= typeof senderState != 'undefined' ? senderState : '' %>" required >
+                                                        <option value="">Select State</option>
+                                                        <% senderState.forEach((so)=> { %>
+                                                        <option value="<%- so %>"><%- so %></option>
+                                                        <% }) %>
+                                                    </select>
+                
+                                                    <label class="fieldlabels">Shipping Method: *</label> 
+                                                    <% let shippingMethod=["Regular 6-7Days", "Express 2-3Days"] %>
+                                                    <select  name="shippingMethod" id="shippingMethod" onchange="updateShippingAmount()"
+                                                        value="<%= typeof shippingMethod != 'undefined' ? shippingMethod : '' %>" required >
+                                                        <option value="">Select Shipping Method</option>
+                                                        <% shippingMethod.forEach((so)=> { %>
+                                                            <option value="<%- so %>"><%- so %></option>
+                                                            <% }) %>
+                                                    </select>     
+                                                    
+                                                    
+                                             
+                
+                                                </div> 
+                                                <input type="button" name="next" class="next action-button" value="Next" /> 
+                                          
+                                            </fieldset>
+                
+                                            <fieldset>
+                                                <div class="form-card">
+                                                    <div class="row">
+                                                        <div class="col-7">
+                                                            <h2 class="fs-title">To Recipient Address:</h2>
+                                                        </div>
+                                                        <div class="col-5">
+                                                            <h2 class="steps">Step 2 - 4</h2>
+                                                        </div>
+                                                    </div> 
+                
+                                                    <label class="fieldlabels">Recipient Name: *</label> 
+                                                    <input type="text" name="recipientName"
+                                                    value="<%= typeof recipientName != 'undefined' ? recipientName : '' %>" required/>
+                                            
+                                                    <label class="fieldlabels">Recipient Email: *</label> 
+                                                    <input type="text" name="recipientEmail"
+                                                    value="<%= typeof recipientEmail != 'undefined' ? recipientEmail : '' %>" required/>
+                                            
+                                                    <label class="fieldlabels">Recipient Number: *</label> 
+                                                    <input type="text" name="recipientNumber" 
+                                                    value="<%= typeof recipientNumber != 'undefined' ? recipientNumber : '' %>" required/>
+                
+                                                    <label class="fieldlabels">Recipient Address: *</label> 
+                                                    <input type="text" name="recipientAddress"
+                                                    value="<%= typeof recipientAddress != 'undefined' ? recipientAddress : '' %>" required/>
+                
+                                                    <label class="fieldlabels">Recipient City: *</label> 
+                                                    <input type="text" name="recipientCity" 
+                                                    value="<%= typeof recipientCity != 'undefined' ? recipientCity : '' %>" required/>
+                
+                                                    <label class="fieldlabels">Recipient State: *</label> 
+                                                    <% let recipientState = ["Abia", "Adamawa","Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti","Enugu", "Gombe","Imo",  "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi","Kogi", "Kwara", "Lagos", "Nasarawa","Niger","Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers","Sokoto", "Taraba","Yobe","Zamfara","Abuja"] %>
+                                                    <select name="recipientState" id="recipientState" onchange="updateShippingAmount()" value="<%= typeof recipientState != 'undefined' ? recipientState : '' %>" required>
+                                                        <option value="">Select Recipient State</option>
+                                                        <% recipientState.forEach((so) => { %>
+                                                            <option value="<%= so %>"><%= so %></option>
+                                                        <% }) %>
+                                                    </select>
+                
+                                                    <!-- Add this inside your form -->
+                                                    <input type="hidden" name="shippingAmount"
+                                                     id="shippingAmountInput" value="" required />
+
+                                                   <!-- Display shippingAmount in a span -->
+                                                   <span id="shippingAmount"></span>
+
+                                                </div> 
+                                                    
+                                             
+                                                <button type="button" name="next" onclick="validateFormAndPay()" class="next actions-button"> Pay with Paystack </button>
+
+
+          
+                                                <input type="button" name="previous" class="previous action-button-previous" 
+                                                value="Previous" />
+                                            </fieldset>
+                
+                                            <fieldset>
+                                                <div class="form-card">
+                                                    <div class="row">
+                                                        <div class="col-7">
+                                                            <h2 class="fs-title">Payment :</h2>
+                                                        </div>
+                                                        <div class="col-5">
+                                                            <h2 class="steps">Step 3 - 4</h2>
+                                                        </div>
+                                                    </div> 
+                
+                                                    
+                                                </div> 
+                                                            
+                                                <input type="submit" name="next" class="next action-button" value="Next" />
+                                                <input type="button" name="previous" class="previous action-button-previous" 
+                                                value="Previous" />
+                                            </fieldset>
+                
+                                            <fieldset>
+                                                <div class="form-card">
+                                                    <div class="row">
+                                                        <div class="col-7">
+                                                            <h2 class="fs-title">Finish:</h2>
+                                                        </div>
+                                                        <div class="col-5">
+                                                            <h2 class="steps">Step 4 - 4</h2>
+                                                        </div>
+                                                    </div> <br><br>
+                                                    
+                                          
+                                                    <h2 class="purple-text text-center"><strong>SUCCESS !</strong></h2> <br>
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-3"> 
+                                                            <img src="https://i.imgur.com/GwStPmg.png" class="fit-image">
+                                                        </div>
+                                                    </div> <br><br>
+                                                    <div class="row justify-content-center">
+                                                         <div class="col-7 text-center">
+                                                            <% if (typeof newTrackingID !== 'undefined') { %>
+                                                                <input type="hidden" name="trackingID" value="<%= newTrackingID %>" />
+                                                                <h5 class="purple-text text-center">Your Label has been successfully created. Please Check your email for Confirmation.</h5>
+                                                                <p>Your Tracking ID: <%= newTrackingID %> </p>
+                                                                <% } else { %>
+                                                                    <h5 class="purple-text text-center">An error occurred. Please try again.</h5>
+                                                                <% } %>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>          
+                                        </form>   
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+         </div>
+      
+         <%- include('../partials/adminFooter'); -%>
+           
+     
+        </div>
+   
+      </div>
+  
+    </div> 
+
+  </body>
+</html>

@@ -1,0 +1,107 @@
+
+.close {
+  color: #fff;
+  transform: scale(1.2)
+}
+.modal-content {
+
+  background: linear-gradient(to bottom right,#F87E7B,#B05574);
+}
+
+.form-control:hover, .form-control:focus {
+  box-shadow: none;  
+  border-color: #fff;
+}
+.username, .password {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  border-bottom: 2px solid #eee;
+  padding-left: 0;
+  font-weight: normal;
+  background: transparent;  
+}
+.form-control::-webkit-input-placeholder {
+  color: #eee;  
+}
+.form-control::placeholder {
+  color: #eee;  
+}
+
+.form-control:focus::-webkit-input-placeholder {
+  font-weight: bold;
+  color: #fff;
+}
+.login {
+  padding: 6px 20px;
+  border-radius: 20px;
+  background: none;
+  border: 2px solid #FAB87F;
+  color: #FAB87F;
+  font-weight: bold;
+  transition: all .5s;
+  margin-top: 1em;
+}
+.login:hover {
+  background: #FAB87F;
+  color: #fff;
+}
+.register{
+  font-size: .9em;
+  color: #fff;
+  text-align: center;
+  margin: 15px 0 10px;
+}
+.register p a{
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+}
+.register p a:hover{
+  text-decoration: underline;
+}
+
+.forget{
+
+  font-size: .9em;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+}
+.forget label input{
+  margin-right: 3px;
+}
+.forget label a{
+color: #fff;
+text-decoration: none;
+}
+.forget label a:hover{
+ text-decoration: underline;
+}
+.username.form-control::placeholder {
+  color: #fff !important;
+}
+.password.form-control::placeholder {
+  color: #fff !important;
+} 
+
+.username.form-control {
+  background-color: transparent; 
+  color: #fff; 
+}
+.password.form-control {
+  background-color: transparent; 
+  color: #fff; 
+}
+
+.username.form-control:focus {
+  outline: none; 
+  border-color: #fff; 
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+.password.form-control:focus {
+  outline: none; 
+  border-color: #fff; 
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+

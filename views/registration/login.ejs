@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Korex Logistics Company</title>
+
+  <link rel="stylesheet" href="../vertical-layout-light/style.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="../img/favi.jpg">
+  <link rel="stylesheet" href="../font/typicons.css">
+
+  
+</head>
+
+<body>
+  <%- include('../partials/header'); -%>
+  <div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+      <div class="content-wrapper d-flex align-items-center auth px-0">
+      
+          <div class="col-lg-4 mx-auto">
+            <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+               
+              <div class="brand-logo">
+                <img src="../img/companyLogo.jpg" alt="logo">
+              </div>
+              <%- include ('../partials/messages'); -%>
+              <div id="greeting"></div>
+              <script src="../js/greeting.js"></script>
+             
+              <h6 class="font-weight-light">Sign in to continue.</h6>
+              <form class="pt-3"  action="/registration/loginPost" method="post">
+                
+                
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-lg"  name="username" placeholder="Your Username"
+                    value="<%= typeof username != 'undefined' ? username : '' %>">
+                  </div>
+                <div class="form-group">
+                  <input type="password" class="form-control form-control-lg"  name="password" placeholder="Password"
+                  value="<%= typeof password != 'undefined' ? password : '' %>">
+                </div>
+                
+                <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
+                   SIGN IN
+                </button>
+                <div class="text-center mt-4 font-weight-light">
+                  Forget your password? <a href="/registration/forgetPassword" class="text-primary">Reset</a>
+                </div>
+            
+                <div class="text-center mt-4 font-weight-light">
+                  Don't have an account? <a href="/registration/register" class="text-primary">Create</a>
+                </div>
+              </form>
+            </div>
+          </div>
+      
+      </div>
+
+    </div>
+
+  </div>
+  <!-- endinject -->
+</body>
+
+</html>

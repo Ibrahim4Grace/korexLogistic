@@ -1,0 +1,112 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Korex Logistics Company</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Korex logistic ">
+    <meta name="keywords" content="logistic,Korex,korexlogistic,korex,shippingcompany,shipping">
+    <meta name="author" content="Agboola Akorede Ibrahim">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="img/favi.jpg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+      <!-- Customized css Stylesheet -->
+      <link href="/css/login.css" rel="stylesheet">
+      <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+     <!-- Topbar Start -->
+  
+     <%- include (`partials/header`); -%>
+     <!-- Topbar End -->
+ 
+    
+     <!-- Header Start -->
+    <div class="jumbotron jumbotron-fluid mb-5">
+        <div class="container text-center py-5">
+            <h1 class="text-white display-3 mb-5">Korex Logistics Services</h1>
+            <div class="mx-auto">
+                <form action="/trackingPagePost" method="post" class="mx-auto">
+                    <div class="input-group">
+                        <input type="text" name="trackingID" class="form-control border-light" placeholder="Tracking Id">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary px-3">Track & Trace</button>
+                        </div>
+                    </div>
+                </form>
+            </div>            
+        </div>
+    </div>
+    <!-- Header End -->
+
+
+    <!-- Services Start -->
+    <div class="container-fluid pt-5">
+        <div class="container">
+            <div class="text-center pb-2">
+                <h6 class="text-primary text-uppercase font-weight-bold">Our Services</h6>
+                <h1 class="mb-4">Korex Logistic Services</h1>
+            </div>
+            <div class="row pb-3">
+                <div class="col-lg-3 col-md-6 text-center mb-5">
+                    <div class="d-flex align-items-center justify-content-center bg-primary mb-4 p-4">
+                        <i class="fa fa-2x fa-plane text-dark pr-3"></i>
+                        <h6 class="text-white font-weight-medium m-0">Air Freight</h6>
+                    </div>
+                    <p>Our air freight solutions are perfect for sensitive shipments, ensuring your goods reach their destination promptly.</p>
+                    <a class="border-bottom text-decoration-none" href="/service">Read More</a>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center mb-5">
+                    <div class="d-flex align-items-center justify-content-center bg-primary mb-4 p-4">
+                        <i class="fa fa-2x fa-ship text-dark pr-3"></i>
+                        <h6 class="text-white font-weight-medium m-0">Ocean Freight</h6>
+                    </div>
+                    <p>Explore economical shipping solutions with our ocean freight services for large or heavy cargo.</p>
+                    <a class="border-bottom text-decoration-none" href="/service">Read More</a>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center mb-5">
+                    <div class="d-flex align-items-center justify-content-center bg-primary mb-4 p-4">
+                        <i class="fa fa-2x fa-truck text-dark pr-3"></i>
+                        <h6 class="text-white font-weight-medium m-0">Land Transport</h6>
+                    </div>
+                    <p>Benefit from our extensive network for reliable and efficient land transport services across the country.</p>
+                    <a class="border-bottom text-decoration-none" href="/service">Read More</a>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center mb-5">
+                    <div class="d-flex align-items-center justify-content-center bg-primary mb-4 p-4">
+                        <i class="fa fa-2x fa-store text-dark pr-3"></i>
+                        <h6 class="text-white font-weight-medium m-0">Cargo Storage</h6>
+                    </div>
+                    <p>Store your goods in our state-of-the-art, secure warehouses equipped with the latest technology.</p>
+                    <a class="border-bottom text-decoration-none" href="/service">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Services End -->
+
+   
+
+
+
+
+        <!-- Footer Start -->
+        <%- include (`partials/footer`); -%>
+        <!-- Footer End -->
+
+</body>
+
+</html>

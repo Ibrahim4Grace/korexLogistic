@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Korex Logistics</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../font/typicons.css">
+    <link rel="stylesheet" href="../css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link rel="icon" href="../img/favi.jpg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+  </head>
+  <body>
+    <div class="container-scroller">
+   
+        <%- include ('../partials/adminNav'); -%>
+    
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:partials/_settings-panel.html -->
+        <div class="theme-setting-wrapper">
+          <div id="settings-trigger"><i class="typcn typcn-cog-outline"></i></div>
+          <div id="theme-settings" class="settings-panel">
+            <i class="settings-close typcn typcn-delete-outline"></i>
+            <p class="settings-heading">SIDEBAR SKINS</p>
+            <div class="sidebar-bg-options" id="sidebar-light-theme">
+              <div class="img-ss rounded-circle bg-light border mr-3"></div>
+              Light
+            </div>
+            <div class="sidebar-bg-options selected" id="sidebar-dark-theme">
+              <div class="img-ss rounded-circle bg-dark border mr-3"></div>
+              Dark
+            </div>
+            <p class="settings-heading mt-2">HEADER SKINS</p>
+            <div class="color-tiles mx-0 px-4">
+              <div class="tiles success"></div>
+              <div class="tiles warning"></div>
+              <div class="tiles danger"></div>
+              <div class="tiles primary"></div>
+              <div class="tiles info"></div>
+              <div class="tiles dark"></div>
+              <div class="tiles default border"></div>
+            </div>
+          </div>
+        </div>
+        <!-- partial -->
+        <!-- partial:partials/_sidebar.html -->
+        <%- include('../partials/adminSidebar'); -%>
+
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+
+              
+                <%- include (`../partials/messages`); -%>
+
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+                         <div class="card-body">
+                           <h4 class="card-title"> Add New Customer</h4>
+                           <p class="card-description">
+                            Personal info
+                           </p>
+                           <form class="form-sample" action="/admin/addNewUserPost" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label">Full Name</label>
+                                  <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="senderName" placeholder="Full name"
+                                    value="<%= typeof senderName != 'undefined' ? senderName : '' %>"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                               <% let selectGender=["Male", "Female"] %>
+                                  <label class="col-sm-3 col-form-label">Gender</label>
+                                  <div class="col-sm-9">
+                                    <select class="form-control" name="senderGender" 
+                                    value="<%= typeof senderGender != 'undefined' ? senderGender : '' %>">
+                                      <option value="">Select Gender</option>
+                                      <% selectGender.forEach((so)=> { %>
+                                        <option value="<%- so %>"><%- so %></option>
+                                      <% }) %>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label">Date of Birth</label>
+                                  <div class="col-sm-9">
+                                    <input class="form-control"  type="date" name="senderDob" placeholder="dd/mm/yyyy"
+                                     value="<%= typeof senderDob != 'undefined' ? senderDob : '' %>"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label">Contact No.</label>
+                                  <div class="col-sm-9">
+                                    <input class="form-control"  type="text" name="senderNumber" placeholder="Phone Number"
+                                     value="<%= typeof senderNumber != 'undefined' ? senderNumber : '' %>"/>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                               <% let selectMembership=["Individual", "Business"] %>
+                                  <label class="col-sm-3 col-form-label">Membership</label>
+                                  <div class="col-sm-9">
+                                    <select class="form-control" name="selectMembership" 
+                                       value="<%= typeof selectMembership != 'undefined' ? selectMembership : '' %>">
+                                       <option value="">Select Membership</option>
+                                      <% selectMembership.forEach((so)=> { %>
+                                        <option value="<%- so %>"><%- so %></option>
+                                      <% }) %>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label">Email ID</label>
+                                  <div class="col-sm-9">
+                                    <input class="form-control"  type="email" name="senderEmail" placeholder="Email Address"
+                                     value="<%= typeof senderEmail != 'undefined' ? senderEmail : '' %>"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <input type="hidden" name="senderRole"  value="User" />
+                            </div>
+                
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label">Username</label>
+                                  <div class="col-sm-9">
+                                    <input class="form-control"  type="text" name="username" placeholder="Username"
+                                     value="<%= typeof username != 'undefined' ? username : '' %>"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label">Password</label>
+                                  <div class="col-sm-9">
+                                    <input class="form-control"  type="password" name="password" placeholder="Enter Password"
+                                     value="<%= typeof password != 'undefined' ? password : '' %>"/>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label">Password</label>
+                                  <div class="col-sm-9">
+                                    <input class="form-control"  type="password" name="password2" placeholder="Confirm Password"
+                                     value="<%= typeof password2 != 'undefined' ? password2 : '' %>"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label">Address</label>
+                                  <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="senderAddress" placeholder="Home address"
+                                    value="<%= typeof senderAddress != 'undefined' ? senderAddress : '' %>"/>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                
+                           
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label">City</label>
+                                  <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="senderCity" placeholder="Home city"
+                                    value="<%= typeof senderCity != 'undefined' ? senderCity : '' %>"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label">State</label>
+                                  <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="senderState" placeholder="Home state"
+                                    value="<%= typeof senderState != 'undefined' ? senderState : '' %>"/>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label">Postcode</label>
+                                  <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="postCode" placeholder="Postcode"
+                                    value="<%= typeof postCode != 'undefined' ? postCode : '' %>"/>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                               <% let Country=["Nigeria"] %>
+                                  <label class="col-sm-3 col-form-label">Country</label>
+                                  <div class="col-sm-9">
+                                    <select class="form-control" name="country" value="<%= typeof country != 'undefined' ? country : '' %>">
+                                      <option value="">Select Country</option>
+                                      <% Country.forEach((so)=> { %>
+                                        <option value="<%- so %>"><%- so %></option>
+                                      <% }) %>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                
+                              <div class="col-md-6">
+                                <div class="form-group row">
+                                  <label class="col-sm-3 col-form-label">Image</label>
+                                      <div  class="col-sm-9">
+                                        <input type="file" class="form-control" name="image">
+                                      </div>
+                                </div>
+                              </div>
+                
+                            </div>
+                
+                            <div>
+                              <button class="btn btn-primary py-3 px-4" type="submit" id="sendMessageButton">Submit Form</button>
+                            </div>
+                          </form>
+                         </div>
+                    </div>
+                </div>
+
+        
+         </div>
+      
+         <%- include('../partials/adminFooter'); -%>
+           
+     
+        </div>
+   
+      </div>
+  
+    </div>
+
+  </body>
+</html>

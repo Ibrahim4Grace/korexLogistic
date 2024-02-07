@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Korex Logistic Company</title>
+    <!-- base:css -->
+    <link rel="stylesheet" href="../../font/typicons.css">
+    <link rel="stylesheet" href="../../vertical-layout-light/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../../vertical-layout-light/style.css">
+    <link rel="stylesheet" href="../../css/vendor.bundle.base.css">
+
+    <!-- endinject -->
+    <link rel="icon" href="../img/favi.jpg">
+  </head>
+  <body>
+    <div class="container-scroller">
+
+      
+                   <%- include ('../partials/userNavbar'); -%>
+            
+
+      <div class="container-fluid page-body-wrapper">
+        <div class="theme-setting-wrapper">
+          <div id="settings-trigger"><i class="typcn typcn-cog-outline"></i></div>
+          <div id="theme-settings" class="settings-panel">
+            <i class="settings-close typcn typcn-delete-outline"></i>
+            <p class="settings-heading">SIDEBAR SKINS</p>
+            <div class="sidebar-bg-options" id="sidebar-light-theme">
+              <div class="img-ss rounded-circle bg-light border mr-3"></div>
+              Light
+            </div>
+            <div class="sidebar-bg-options selected" id="sidebar-dark-theme">
+              <div class="img-ss rounded-circle bg-dark border mr-3"></div>
+              Dark
+            </div>
+            <p class="settings-heading mt-2">HEADER SKINS</p>
+            <div class="color-tiles mx-0 px-4">
+              <div class="tiles success"></div>
+              <div class="tiles warning"></div>
+              <div class="tiles danger"></div>
+              <div class="tiles primary"></div>
+              <div class="tiles info"></div>
+              <div class="tiles dark"></div>
+              <div class="tiles default border"></div>
+            </div>
+          </div>
+        </div>
+      
+        <%- include ('../partials/userSidebar'); -%>            
+        
+        <div class="main-panel">
+          <div class="content-wrapper">
+              
+                <%- include (`../partials/messages`); -%>
+
+
+                <div class="col-lg-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title"><%- shippingInfo.senderName %> Shipping Information</h4>
+
+                            <ul class="v">
+                            
+                                <li><strong>Sender Name</strong></li>
+                                <p>
+                                    <%= shippingInfo.senderName%>
+                                </p>
+                                <li><strong>Sender Email</strong></li>
+                                <p>
+                                    <%= shippingInfo.senderEmail%>
+                                </p>
+                                <li><strong>Sender Number</strong></li>
+                                <p>
+                                    <%= shippingInfo.senderNumber%>
+                                </p>
+                                <li><strong>Membership</strong></li>
+                                <p>
+                                    <%= shippingInfo.selectMembership%>
+                                </p>
+                                <li><strong>Sender Address</strong></li>
+                                <p>
+                                    <%=shippingInfo.senderAddress%>
+                                </p>
+                                <li><strong>Sender City</strong></li>
+                                <p>
+                                    <%=shippingInfo.senderCity%>
+                                </p>
+                                <li><strong>Sender State</strong></li>
+                                <p>
+                                    <%=shippingInfo.senderState%>
+                                </p>
+                                <li><strong>Shipping Method</strong></li>
+                                <p>
+                                    <%=shippingInfo.shippingMethod%>
+                                </p>
+                                <li><strong>Recipient Name</strong></li>
+                                <p>
+                                    <%=shippingInfo.recipientName%>
+                                </p>
+                                <li><strong>Recipient Email</strong></li>
+                                <p>
+                                    <%=shippingInfo.recipientEmail%>
+                                </p>
+                                <li><strong>Recipient Number</strong></li>
+                                <p>
+                                    <%=shippingInfo.recipientNumber%>
+                                </p>
+                                <li><strong>Recipient Address</strong></li>
+                                <p>
+                                    <%=shippingInfo.recipientAddress%>
+                                </p>
+                                <li><strong>Recipient City</strong></li>
+                                <p>
+                                    <%=shippingInfo.recipientCity%>
+                                </p>
+                                <li><strong>Recipient State</strong></li>
+                                <p>
+                                    <%=shippingInfo.recipientState%>
+                                </p>
+                                <li><strong>Shipping Fees</strong></li>
+                                <p>
+                                    <%=shippingInfo.shippingAmount%>
+                                </p>
+                                <li><strong>Tracking ID</strong></li>
+                                <p>
+                                    <%=shippingInfo.trackingID%>
+                                </p>
+                                <li><strong>Delivery Day</strong></li>
+                                <p>
+                                    <%=shippingInfo.deliveryDay%>
+                                </p>
+                                <li><strong>Delivery Date</strong></li>
+                                <p>
+                                    <%=shippingInfo.deliveryDate%>
+                                </p>
+                                <li><strong>Delivery Month</strong></li>
+                                <p>
+                                    <%=shippingInfo.deliveryMonth%>
+                                </p>
+                                <li><strong>Delivery Time</strong></li>
+                                <p>
+                                    <%=shippingInfo.deliveryTime%>
+                                </p>
+                                <li><strong>Status Message</strong></li>
+                                <p>
+                                    <%=shippingInfo.statusMessage%>
+                                </p>
+                                <li><strong>Create Shipping date</strong></li>
+                                <p>
+                                    <%=shippingInfo.date_added.toLocaleString()%>
+                                </p>
+                            </ul>
+                      
+                      
+                        </div>
+                    </div>
+                </div>
+              
+
+        
+         </div>
+   
+         <%- include('../partials/userFooter'); -%>
+         
+       
+        </div>
+    
+      </div>
+  
+    </div>
+ 
+
+
+  </body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Korex Logistics Company</title>
+
+  <link rel="stylesheet" type="text/css" href="<%= process.env.BASE_URL || 'http://localhost:4040' %>/vertical-layout-light/style.css">
+  <link rel="stylesheet" type="text/css" href="<%= process.env.BASE_URL || 'http://localhost:4040' %>/css/style.css">
+  <link rel="icon" href="<%= process.env.BASE_URL || 'http://localhost:4040' %>/font/typicons.css">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
+<body>
+  <%- include('../partials/header'); -%>
+  <div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
+      <div class="content-wrapper d-flex align-items-center auth px-0">
+      
+          <div class="col-lg-4 mx-auto">
+            <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+               
+              <div class="brand-logo">
+                <img src="<%= process.env.BASE_URL || 'http://localhost:4040' %>/img/companyLogo.jpg" alt="logo">
+              </div>
+              <%- include ('../partials/messages'); -%>
+             
+             
+
+                <!-- Resend Email Button -->
+                <button id="resendEmailBtn" data-email="<%= user.senderEmail %>">Resend Verification Email</button>
+
+
+            </div>
+          </div> 
+      
+      </div>
+
+    </div>
+
+  </div>
+  <script>
+   $(document).ready(function() {
+    // When the Resend Email button is clicked
+    $('#resendEmailBtn').click(function() {
+        // Get the user's email from the button's data attribute
+        const userEmail = $(this).data('email');
+
+        // Make an AJAX request to the resend verification email endpoint
+        $.ajax({
+            url: '/resend-verification',
+            method: 'POST',
+            data: { userEmail: userEmail },
+            success: function(response) {
+                // Display a success message to the user (optional)
+                alert('Verification email resent successfully');
+            },
+            error: function(error) {
+                // Display an error message to the user (optional)
+                alert('Failed to resend verification email');
+            }
+        });
+    });
+});
+</script>
+
+  <!-- endinject -->
+</body>
+
+</html>

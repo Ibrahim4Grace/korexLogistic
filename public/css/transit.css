@@ -1,0 +1,146 @@
+.transitContainer
+{
+	width:100%;
+}
+.contentPage{
+    width:50%;
+    max-width: 500px;
+	border:0.5 solid black;
+	box-shadow:1px 1px 1px 1px grey;
+	min-height:470px;
+	border-radius:5px;
+	margin:auto;
+	margin-top:30px;
+	background-color:#8FD2F7;	
+    position: relative;
+ 
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .contentPage {
+        width:90%;
+        min-height:680px;
+    }
+}
+@media (min-width: 481px) and (max-width: 767px) {
+    .contentPage {
+        min-height:600px;
+    }
+}
+@media (min-width: 481px) and (max-width: 1024px) {
+    .contentPage {
+        width:80%;
+    }
+}
+
+.sideline{
+	width:2%;
+    min-height: inherit;
+	background-color:#000C20;
+	float:left;
+	border-radius:5px 0PX 0PX 5PX;
+}
+
+.nameTracking{
+    font-size: 15px;
+    line-height: 1;
+    padding: 10px 17px;
+    color: #000C20;
+  
+}
+.trackingNum{
+    font-size: 24px;
+    color: #000C20;
+    line-height: 0;
+    padding: 0px 17px;
+}
+.deliveryDate{
+    font-size:23px;
+    color:#000C20;
+    line-height: 1;
+    padding: 0px 17px;
+}
+.dateGroup{
+
+    width: 200px;
+    padding: 0px 17px;
+
+}
+.day{
+    color: #000C20;
+    line-height: 1;
+    font-size: 29px;
+}
+.number{
+    font-size:50px;
+    color:#000C20;
+    line-height: 1;
+}
+.month{
+    font-size: 15px;
+    color: #000C20;
+    text-align: right;
+    margin-left: -4px;
+  
+}
+.deliveryTime
+{
+    width: 180px;
+    padding: 15px 21px;
+    /* border: 1px solid black; */
+    float: right;
+    margin-top: -97px;
+    margin-right: 20px;
+}
+@media (min-width: 320px) and (max-width: 767px) {
+    .deliveryTime {
+        margin-top: 0px;
+    }
+}
+.beforeTime{
+    font-size:25px;
+    color:#000C20;
+}
+.statusMessage
+{
+  width: 95%;
+  padding: 10px 4px;
+  /* border: 1px solid black; */
+  margin: auto;
+  color: #000C20;
+}
+@media (min-width: 320px) and (max-width: 767px) {
+    .statusMessage {
+        margin-top: 120px;
+    }
+}
+.notFound{
+    margin: 0;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-size: 25px
+}
+@media (min-width: 320px) and (max-width: 480px) {
+    .notFound {
+        font-size: 22px
+    }
+}
+
+.notFoundWord{
+    margin: 0;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    font-size: 18px;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    line-height: 1;
+}
+@media (min-width: 320px) and (max-width: 480px) {
+    .notFoundWord {
+        font-size: 17px; 
+    }
+}
