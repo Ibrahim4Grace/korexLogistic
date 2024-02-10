@@ -78,7 +78,6 @@ app.use(session({
 }));
 
 
-
 // TO CALL OUR EJS
 app.set(`view engine`, `ejs`);
 
@@ -108,7 +107,6 @@ app.disable('x-powered-by'); //less hacker know about our stack
 
 
 const chatIo = chatIoSetup(server, app, wrap, Chat);
-
 const notificationIo = notificationIoSetup(io);
 
 

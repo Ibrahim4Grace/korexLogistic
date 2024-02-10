@@ -205,7 +205,7 @@
                                                         </div> 
                                                             
                                                      
-                                                        <button type="button" name="next" onclick="validateFormAndPay()" class="next actions-button"> Pay with Paystack </button>
+                                                        <button type="button" name="next" onclick="payWithPaystack()" class="next actions-button"> Pay with Paystack </button>
         
         
                   
@@ -227,7 +227,7 @@
                                                             
                                                         </div> 
                                                                     
-                                                        <input type="submit" name="next" class="next action-button" value="Next" />
+                                                        <input  id="nextButton" type="submit" name="next" class="next action-button" value="Next" disabled />
                                                         <input type="button" name="previous" class="previous action-button-previous" 
                                                         value="Previous" />
                                                     </fieldset>
@@ -260,6 +260,7 @@
                                                                             <h5 class="purple-text text-center">An error occurred. Please try again.</h5>
                                                                         <% } %>
                                                                 </div>
+                                                                <input type="hidden" name="statusMessage"  value=""  />
                                                             </div>
                                                         </div>
                                                     </fieldset>          

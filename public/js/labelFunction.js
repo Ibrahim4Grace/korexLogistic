@@ -36,6 +36,7 @@ $(document).ready(function () {
         }
       );
       setProgressBar(++current);
+
     } else {
       alert("Please fill in all the required fields.");
     }
@@ -76,8 +77,6 @@ $(document).ready(function () {
     percent = percent.toFixed();
     $(".progress-bar").css("width", percent + "%");
   }
-
- 
 
   function validateForm(step) {
     let isValid = true;

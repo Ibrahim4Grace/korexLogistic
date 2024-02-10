@@ -1,0 +1,31 @@
+Logistic System
+
+Welcome to our logistic system! Our platform provides a comprehensive solution for users to manage their shipping needs conveniently and efficiently. With features such as account registration, payment processing, label creation, package tracking, shipping history, real-time chat support, and PDF receipt generation, our platform offers a seamless experience for both users and administrators.
+
+Features:
+
+Account Registration: Users can easily register an account to access the full range of features offered by our platform.
+Payment Processing: Secure payment processing allows users to make payments for their shipping needs with ease.
+Label Creation: Users can generate shipping labels directly from our platform, simplifying the shipping process.
+Package Tracking: Real-time package tracking enables users to monitor the status and location of their packages online.
+Shipping History: Users can view their complete shipping history, including past shipments and delivery details.
+Real-Time Chat Support: Our integrated chat feature enables users to communicate with administrators in real-time using Socket.IO.
+PDF Receipt Generation: After creating a shipping label, users can download a PDF receipt containing detailed information about their shipment, including sender and recipient details, tracking information, shipping amount, delivery date, and status message.
+Technologies Used:
+
+Frontend: HTML, CSS, EJS (Embedded JavaScript)
+Backend: Node.js, Express.js
+Database: MongoDB
+Authentication: JWT (JSON Web Tokens), Passport.js
+Email Notifications: Nodemailer
+Real-Time Communication: Socket.IO
+PDF Generation: PDFKit
+Usage:
+
+Register an Account: Get started by registering an account to access all features.
+Make a Payment: Use the integrated payment processing to make payments for your shipping needs.
+Create Shipping Labels: Generate shipping labels directly from the platform to simplify the shipping process.
+Track Packages: Monitor the status and location of your packages in real-time.
+View Shipping History: Keep track of past shipments and delivery details in the shipping history section.
+Use Chat Support: Communicate with administrators for support and assistance in real-time.
+Download PDF Receipts: After creating a shipping label, download a PDF receipt for detailed shipment information.

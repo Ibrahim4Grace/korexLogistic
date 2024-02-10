@@ -72,6 +72,7 @@
                                 <th>Tracking Number</th>
                                 <th>Shipping Fees</th>
                                 <th>Shipping Details</th>
+                                <th>Download Pdf</th>
                                
                             </tr>
                           </thead>
@@ -91,6 +92,16 @@
                                         View
                                     </a>
                                 </td>
+                               
+                                <td>
+                                  <% if ( shippingHistory.senderName && shippingHistory.senderNumber && shippingHistory.senderAddress && shippingHistory.senderCity && shippingHistory.senderState && shippingHistory.recipientName && shippingHistory.recipientNumber && shippingHistory.recipientAddress && shippingHistory.recipientCity && shippingHistory.recipientState && shippingHistory.trackingID && shippingHistory.shippingAmount && shippingHistory.deliveryDay && shippingHistory.deliveryDate && shippingHistory.deliveryMonth && shippingHistory.statusMessage ) { %>
+                                      <a href="/generate-pdf?senderName=<%= encodeURIComponent(shippingHistory.senderName) %>&senderNumber=<%= encodeURIComponent(shippingHistory.senderNumber) %>&senderAddress=<%= encodeURIComponent(shippingHistory.senderAddress) %>&senderCity=<%= encodeURIComponent(shippingHistory.senderCity) %>&senderState=<%= encodeURIComponent(shippingHistory.senderState) %>&recipientName=<%= encodeURIComponent(shippingHistory.recipientName) %>&recipientNumber=<%= encodeURIComponent(shippingHistory.recipientNumber) %>&recipientAddress=<%= encodeURIComponent(shippingHistory.recipientAddress) %>&recipientCity=<%= encodeURIComponent(shippingHistory.recipientCity) %>&recipientState=<%= encodeURIComponent(shippingHistory.recipientState) %>&trackingID=<%= encodeURIComponent(shippingHistory.trackingID) %>&shippingAmount=<%= encodeURIComponent(shippingHistory.shippingAmount) %>&deliveryDay=<%= encodeURIComponent(shippingHistory.deliveryDay) %>&deliveryDate=<%= encodeURIComponent(shippingHistory.deliveryDate) %>&deliveryMonth=<%= encodeURIComponent(shippingHistory.deliveryMonth) %>&statusMessage=<%= encodeURIComponent(shippingHistory.statusMessage) %>" target="_blank">Download PDF</a>
+                                  <% } else { %>
+                                    In progress
+                                  <% } %>
+                              </td>
+                              
+          
                                 </tr>
                               <% }); %>
                             <% } else { %>

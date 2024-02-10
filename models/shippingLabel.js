@@ -84,10 +84,6 @@ const labelSchema = new mongoose.Schema({
     statusMessage:{
         type: String,
     },
-    customerSupportContact: {
-        type: String,
-        default: '07033731378'
-    },
     date_added: {
         type: Date,
         default: Date.now()

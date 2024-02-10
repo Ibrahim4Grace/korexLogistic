@@ -59,119 +59,297 @@
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title"><%- shippingInfo.senderName %> Shipping Information</h4>
-
-                            <ul class="v">
-                            
-                                <li><strong>Sender Name</strong></li>
-                                <p>
-                                    <%= shippingInfo.senderName%>
-                                </p>
-                                <li><strong>Sender Email</strong></li>
-                                <p>
-                                    <%= shippingInfo.senderEmail%>
-                                </p>
-                                <li><strong>Sender Number</strong></li>
-                                <p>
-                                    <%= shippingInfo.senderNumber%>
-                                </p>
-                                <li><strong>Membership</strong></li>
-                                <p>
-                                    <%= shippingInfo.selectMembership%>
-                                </p>
-                                <li><strong>Sender Address</strong></li>
-                                <p>
-                                    <%=shippingInfo.senderAddress%>
-                                </p>
-                                <li><strong>Sender City</strong></li>
-                                <p>
-                                    <%=shippingInfo.senderCity%>
-                                </p>
-                                <li><strong>Sender State</strong></li>
-                                <p>
-                                    <%=shippingInfo.senderState%>
-                                </p>
-                                <li><strong>Shipping Method</strong></li>
-                                <p>
-                                    <%=shippingInfo.shippingMethod%>
-                                </p>
-                                <li><strong>Recipient Name</strong></li>
-                                <p>
-                                    <%=shippingInfo.recipientName%>
-                                </p>
-                                <li><strong>Recipient Email</strong></li>
-                                <p>
-                                    <%=shippingInfo.recipientEmail%>
-                                </p>
-                                <li><strong>Recipient Number</strong></li>
-                                <p>
-                                    <%=shippingInfo.recipientNumber%>
-                                </p>
-                                <li><strong>Recipient Address</strong></li>
-                                <p>
-                                    <%=shippingInfo.recipientAddress%>
-                                </p>
-                                <li><strong>Recipient City</strong></li>
-                                <p>
-                                    <%=shippingInfo.recipientCity%>
-                                </p>
-                                <li><strong>Recipient State</strong></li>
-                                <p>
-                                    <%=shippingInfo.recipientState%>
-                                </p>
-                                <li><strong>Shipping Fees</strong></li>
-                                <p>
-                                    <%=shippingInfo.shippingAmount%>
-                                </p>
-                                <li><strong>Tracking ID</strong></li>
-                                <p>
-                                    <%=shippingInfo.trackingID%>
-                                </p>
-                                <li><strong>Delivery Day</strong></li>
-                                <p>
-                                    <%=shippingInfo.deliveryDay%>
-                                </p>
-                                <li><strong>Delivery Date</strong></li>
-                                <p>
-                                    <%=shippingInfo.deliveryDate%>
-                                </p>
-                                <li><strong>Delivery Month</strong></li>
-                                <p>
-                                    <%=shippingInfo.deliveryMonth%>
-                                </p>
-                                <li><strong>Delivery Time</strong></li>
-                                <p>
-                                    <%=shippingInfo.deliveryTime%>
-                                </p>
-                                <li><strong>Status Message</strong></li>
-                                <p>
-                                    <%=shippingInfo.statusMessage%>
-                                </p>
-                                <li><strong>Create Shipping date</strong></li>
-                                <p>
-                                    <%=shippingInfo.date_added.toLocaleString()%>
-                                </p>
-                            </ul>
-                      
-                      
-                        </div>
+                            <div width="600" align="center" class="devicewidth">
+                                <div>
+                                    <!-- Start header Section -->
+                                  
+                                        <div style="padding-top: 30px;">
+                                            <div width="560" align="center" class="devicewidthinner headingAddress">
+                                                <div>
+                                                  
+                                                    <div>
+                                                        <div class="addressTable">
+                                                            452B ICM Mall Road
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div  class="addressTable">
+                                                            Maryland, Lagos NG, 23401
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="addressTable space">
+                                                            <strong>Phone:</strong>  234-703-4432-762 |<strong> Email:</strong> Korexlogistics.com
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                  
+                                    <!-- End header Section -->
+                                    
+                                    <!-- Start address Section -->
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div width="560" align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div>
+                                                        <div class="heading">
+                                                            <%- shippingInfo.senderName %> Shipping Information
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End address Section -->
+                                    
+                                    <!-- Start product Section -->
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">  Sender Name</div>
+                                                    <span class="spanword"> <%= shippingInfo.senderName%> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords"> Sender Email</div>
+                                                    <span class="spanword">  <%= shippingInfo.senderEmail%> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords"> Sender Number</div>
+                                                    <span class="spanword">  <%= shippingInfo.senderNumber %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords"> Membership</div>
+                                                    <span class="spanword">  <%= shippingInfo.selectMembership %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords"> Sender Address</div>
+                                                    <span class="spanword">  <%= shippingInfo.senderAddress %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords"> Sender Address</div>
+                                                    <span class="spanword">  <%= shippingInfo.senderAddress %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords"> Sender City</div>
+                                                    <span class="spanword">  <%= shippingInfo.senderCity %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords"> Sender State</div>
+                                                    <span class="spanword">  <%= shippingInfo.senderState %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Shipping Method</div>
+                                                    <span class="spanword">  <%= shippingInfo.shippingMethod %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Recipient Name</div>
+                                                    <span class="spanword">  <%= shippingInfo.recipientName %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Recipient Email</div>
+                                                    <span class="spanword">  <%= shippingInfo.recipientEmail %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Recipient Number</div>
+                                                    <span class="spanword">  <%= shippingInfo.recipientNumber%>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Recipient Address</div>
+                                                    <span class="spanword">  <%= shippingInfo.recipientAddress %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Recipient City</div>
+                                                    <span class="spanword">  <%= shippingInfo.recipientCity %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Recipient State</div>
+                                                    <span class="spanword">  <%= shippingInfo.recipientState %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Shipping Fees</div>
+                                                    <span class="spanword">  <%= shippingInfo.shippingAmount %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Tracking ID</div>
+                                                    <span class="spanword">  <%= shippingInfo.trackingID %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Delivery Day</div>
+                                                    <span class="spanword">  <%= shippingInfo.deliveryDay %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Delivery Date</div>
+                                                    <span class="spanword">  <%= shippingInfo.deliveryDate %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Delivery Month</div>
+                                                    <span class="spanword">  <%= shippingInfo.deliveryMonth %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Delivery Time</div>
+                                                    <span class="spanword">  <%= shippingInfo.deliveryTime %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Status Message</div>
+                                                    <span class="spanword">  <%= shippingInfo.statusMessage %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Create Shipment date</div>
+                                                    <span class="spanword">  <%= shippingInfo.date_added.toLocaleString() %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End product Section -->
+                                
+                                </div>
+                            </div>
+                                          
+                       
+                       </div>
                     </div>
                 </div>
-              
-
-        
-         </div>
-   
+         </div> 
          <%- include('../partials/userFooter'); -%>
          
-       
         </div>
-    
       </div>
-  
-    </div>
- 
-
+    </div> 
 
   </body>
 </html>

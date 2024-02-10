@@ -115,3 +115,12 @@
   }
 }
 
+#outlook a {padding:0;}
+.addressTable{ font-size: 14px; line-height: 18px; color: #666666;  }
+.space{padding-bottom: 25px;}
+.heading {width: 55%; font-size: 15px; font-weight: bold; color: #666666; padding-bottom: 5px;}
+.devicewidthinner{border-bottom: 1px solid #bbbbbb;}
+.spacdeTwo{margin-top: -5px;}
+.spanword{font-size: 14px; line-height: 18px; color: #757575; width: 440px;}
+.divwords{font-size: 14px; font-weight: bold; color: #666666; padding-bottom: 5px;}
+.headingAddress{border-bottom: 1px solid #eeeeee; text-align: center;}

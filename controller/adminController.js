@@ -1,5 +1,3 @@
-
-
 const express = require(`express`)
 const router = express.Router();
 const bcrypt = require('bcryptjs');
@@ -997,7 +995,7 @@ const editLabelHistoryPost = async (req, res) => {
     try {
         const mu_id = req.params.mu_id;
         const admin = req.body;
-        const { senderName, senderEmail, senderNumber, senderAddress,senderCity,senderState, recipientName, recipientEmail, recipientNumber, recipientAddress,recipientCity,recipientState, deliveryDay, deliveryDate, deliveryMonth,deliveryYear, deliveryTime,customerSupportContact,statusCode } = req.body;
+        const { senderName, senderEmail, senderNumber, senderAddress,senderCity,senderState, recipientName, recipientEmail, recipientNumber, recipientAddress,recipientCity,recipientState, deliveryDay, deliveryDate, deliveryMonth,deliveryYear, deliveryTime,statusCode } = req.body;
         
         //These lines are extracting specific properties from req.body to be 
         //passed as arguments to the generateStatusMessage function.
@@ -1009,7 +1007,7 @@ const editLabelHistoryPost = async (req, res) => {
             deliveryYear,
             recipientCity,
             recipientState,
-            customerSupportContact
+            customerSupportContact:phoneNumber
         });
     
         
@@ -1017,7 +1015,7 @@ const editLabelHistoryPost = async (req, res) => {
         await shippingLabel.findByIdAndUpdate(mu_id, {
             $set: { senderName, senderEmail, senderNumber,  senderAddress,senderCity,senderState,recipientName, 
                 recipientEmail, recipientNumber, recipientAddress, recipientCity,recipientState, deliveryDay,
-                deliveryDate, deliveryMonth,deliveryYear, deliveryTime, statusMessage,customerSupportContact,admin,
+                deliveryDate, deliveryMonth,deliveryYear, deliveryTime, statusMessage, customerSupportContact:phoneNumber,admin,
             }
         });
 

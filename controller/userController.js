@@ -1,18 +1,18 @@
-
+require('dotenv').config();
 const express = require(`express`)
+const axios = require('axios');
 const bcrypt = require('bcryptjs');
 const nodemailer = require(`nodemailer`);
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
 const app = express();
+const PDFDocument = require('pdfkit');
 const generateTrackingID = require('../utils/tracking');
 const  shippingLabel  = require('../models/shippingLabel');
 const  User  = require('../models/User');
-const  Admin  = require('../models/admin');
 const Notification = require('../models/notification');
 const notificationIo = io.of('/notifications');
-const Chat = require('../models/chat');
 const https = require('https');
 
 // Send email to the applicant
@@ -65,7 +65,7 @@ const usersLandingPage = async (req, res) => {
     }
 };
 
-  //create shipping label
+ // create shipping label
 const createShippingLabel = async (req, res) => {
     try {
         if (!req.session.user_id && !req.session.username) {
@@ -81,7 +81,7 @@ const createShippingLabel = async (req, res) => {
             req.flash('error_msg', 'User not found');
             return res.redirect('/registration/login');
         }
-        const newTrackingID = await generateTrackingID();
+        const newTrackingID =  generateTrackingID();
 
         res.render('users/createLabel', { user, newTrackingID});
        
@@ -113,15 +113,18 @@ const createLabelPagePost =  async(req, res) => {
  
     try {
 
-        let newTrackingID = trackingID;
+      let newTrackingID = trackingID;
+        const existingShippingLabel = await shippingLabel.findOne({ trackingID });
+        if (existingShippingLabel) { 
+            newTrackingID =  generateTrackingID(); // Generate a new tracking number
+        }
 
-      const existingShippingLabel = await shippingLabel.findOne({ trackingID });
-      if (existingShippingLabel) { newTrackingID = await generateTrackingID(); }// Generate a new tracking number
+
         const newShippingLabel = new shippingLabel({
             senderName, senderEmail, senderNumber, selectMembership, senderAddress, senderCity,
             senderState, shippingMethod, recipientName, recipientEmail, recipientNumber,
             recipientAddress, recipientCity, recipientState, shippingAmount, trackingID: newTrackingID,
-            userId
+            userId,statusMessage: 'Unknown Status check back later' // Set initial status here
         
         });
         await newShippingLabel.save();
@@ -189,6 +192,9 @@ const createLabelPagePost =  async(req, res) => {
             }
            });
         console.log('Shipping label created successfully');
+        setTimeout(() => {
+            res.status(200).redirect('/users/shippingHistory');
+        }, 5000); 
     } catch (error) {
         console.error('Error creating shipping label:', error);
         req.flash('error', 'An error occurred while processing your request.');
@@ -434,8 +440,6 @@ const contactUsPage = async (req, res) => {
     }
 };
 
-
-
 // logout User
 const logout = (req, res) => {
 
@@ -496,9 +500,157 @@ const shippingAmount = (req, res) => {
     res.json({ shippingFee: shippingFee.toFixed(2) });
 };
 
+const generatePdfShipping = (req, res) =>{
+
+   const {senderName,senderNumber,senderAddress,senderCity,senderState,recipientName,recipientNumber,recipientAddress,recipientCity,recipientState,trackingID,shippingAmount,deliveryDay,deliveryDate,deliveryMonth,statusMessage } = req.query;
+    // Create a new PDF document
+    const doc = new PDFDocument();
+  
+    // Pipe the PDF to the response
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=${encodeURIComponent('generated-pdf.pdf')}`);
+    doc.pipe(res);
+  
+    // Add content to the PDF using the provided data
+    doc.text(`Sender Name: ${senderName}\n`);
+    doc.text(`Sender Number: ${senderNumber}\n`);
+    doc.text(`Sender Address: ${senderAddress}\n`);
+    doc.text(`Sender City: ${senderCity}\n`);
+    doc.text(`Sender State: ${senderState}\n\n`);
+
+    doc.text(`Recipient Name: ${recipientName}\n`);
+    doc.text(`Recipient Number: ${recipientNumber}\n`);
+    doc.text(`Recipient Address: ${recipientAddress}\n`);
+    doc.text(`Recipient City: ${recipientCity}\n`);
+    doc.text(`Recipient State: ${recipientState}\n\n`);
+
+    doc.text(`Tracking ID: ${trackingID}\n`);
+    doc.text(`Shipping Amount: ${shippingAmount}\n`);
+    doc.text(`Delivery Day: ${deliveryDay}\n`);
+    doc.text(`Delivery Date: ${deliveryDate}\n`);
+    doc.text(`Delivery Month: ${deliveryMonth}\n\n`);
+
+    doc.text(`Status Message: ${statusMessage}\n`);
+  
+    // End the PDF document
+    doc.end();
+};
+
+//AYSTACK PAYMENT
+// const makePayment = async (req, res) => {
+//     // Retrieve necessary data from request body
+//     const { name, email, amount  } = req.body;
+
+//      // Generate reference 
+//     const reference = newReferenceNumber();
+  
+//     // // Ensure that shippingAmount is a valid number before proceeding
+//     // const amount = parseFloat(shippingAmount);
+//     // if (isNaN(amount)) {
+//     //     return res.status(400).json({ error: 'Invalid shipping amount' });
+//     // }
+//     // Replace this with your Paystack secret key from environment variables
+//     const secretKey = process.env.PAYSTACK_SECRET;
+
+//         // Send response to client with necessary payment details
+//     // res.json({ senderName, senderEmail, secretKey, amount, reference }); 
+//     res.json({ name, email,amount, secretKey,  reference }); 
+// };
+
+const makePayment = async (req, res) => {
+    try {
+
+        const { name, email, amount  } = req.body;
+        // params
+        const params = JSON.stringify({
+            "name": name,
+          "email": email,
+          "amount": amount * 100,
+          
+        })
+        // options
+        const options = {
+          hostname: 'api.paystack.co',
+          port: 443,
+          path: '/transaction/initialize',
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
+            'Content-Type': 'application/json'
+          }
+        }
+        // client request
+        const clientReq = https.request(options, apiRes => {
+          let data = ''
+          apiRes.on('data', (chunk) => {
+            data += chunk
+          });
+          apiRes.on('end', () => {
+            console.log(JSON.parse(data));
+            return res.status(200).json(data);
+          })
+        }).on('error', error => {
+          console.error(error)
+          return res.status(400).json(error.message);
+        })
+        clientReq.write(params)
+        clientReq.end()
+  
+      } catch (error) {
+        // Handle any errors that occur during the request
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred' });
+      }
+};
+const verifyPayment = async (req, res) => {
+    const reference = req.params.reference;
+    try {
+        const options = {
+            hostname: 'api.paystack.co',
+            port: 443,
+            path: `/transaction/verify/${reference}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`
+            }
+        };
+
+        const apiReq = https.request(options, (apiRes) => {
+            let data = '';
+
+            apiRes.on('data', (chunk) => {
+                data += chunk;
+            });
+
+            apiRes.on('end', () => {
+                try {
+                    const responseData = JSON.parse(data); // Parse the response data
+                    console.log(responseData);
+                    res.status(200).json(responseData); // Send parsed data as JSON response
+                } catch (error) {
+                    console.error('Error parsing JSON data:', error);
+                    res.status(500).json({ error: 'Error parsing JSON data' });
+                }
+            });
+        });
+
+        apiReq.on('error', (error) => {
+            console.error('Error making API request:', error);
+            res.status(500).json({ error: 'An error occurred' });
+        });
+
+        // End the request
+        apiReq.end();
+
+    } catch (error) {
+        // Handle any errors that occur during the request
+        console.error('Error in try-catch block:', error);
+        res.status(500).json({ error: 'An error occurred' });
+    }
+};
 
 
 
 
- module.exports = ({ usersLandingPage, createShippingLabel, createLabelPagePost, shippingHistory,viewLabelInfo, editUserInformation, upload, editUserInformationPost, contactUsPage, logout ,shippingAmount  });
+ module.exports = ({ usersLandingPage, createShippingLabel, createLabelPagePost, shippingHistory,viewLabelInfo, editUserInformation, upload, editUserInformationPost, contactUsPage, logout ,shippingAmount,generatePdfShipping, makePayment ,verifyPayment});
 
