@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require(`express`)
 const axios = require('axios');
 const bcrypt = require('bcryptjs');
@@ -14,6 +13,8 @@ const  User  = require('../models/User');
 const Notification = require('../models/notification');
 const notificationIo = io.of('/notifications');
 const https = require('https');
+
+const lodash = require('lodash');
 
 // Send email to the applicant
 const transporter = nodemailer.createTransport({
@@ -536,42 +537,17 @@ const generatePdfShipping = (req, res) =>{
     doc.end();
 };
 
-//AYSTACK PAYMENT
-// const makePayment = async (req, res) => {
-//     // Retrieve necessary data from request body
-//     const { name, email, amount  } = req.body;
-
-//      // Generate reference 
-//     const reference = newReferenceNumber();
-  
-//     // // Ensure that shippingAmount is a valid number before proceeding
-//     // const amount = parseFloat(shippingAmount);
-//     // if (isNaN(amount)) {
-//     //     return res.status(400).json({ error: 'Invalid shipping amount' });
-//     // }
-//     // Replace this with your Paystack secret key from environment variables
-//     const secretKey = process.env.PAYSTACK_SECRET;
-
-//         Send response to client with necessary payment details
-//     // res.json({ senderName, senderEmail, secretKey, amount, reference }); 
-//     res.json({ name, email,amount, secretKey,  reference }); 
-// };
-
 
 const makePayment = async (req, res) => {
     try {
         const { name, email, amount } = req.body; // Extract relevant data from request body
-        const secretKey = process.env.PAYSTACK_SECRET;
-        // // Generate a random reference for the transaction
-        // const reference = '' + Math.floor(Math.random() * 1000000000);
 
         // Prepare the parameters for initializing the transaction
         const params = JSON.stringify({
             name,
             email,
             amount: amount * 100, // Convert amount to kobo (1 Naira = 100 kobo)
-            secretKey,
-            // reference
+           
         });
 
         // Set up options for making the request to Paystack API
@@ -581,7 +557,7 @@ const makePayment = async (req, res) => {
             path: '/transaction/initialize',
             method: 'POST',
             headers: {
-                Authorization: `Bearer ${secretKey}`,
+                Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
                 'Content-Type': 'application/json'
             }
         };
@@ -593,13 +569,13 @@ const makePayment = async (req, res) => {
                 data += chunk;
             });
             apiRes.on('end', async () => {
-                console.log(JSON.parse(data));
-                // Verify payment after initializing the transaction
-                // await verifyPayment(reference, res);
+                const responseData = JSON.parse(data);
+                // Send the authorization URL back to the client
+                res.json(responseData);
             });
         }).on('error', error => {
             console.error(error);
-            return res.status(400).json({ error: error.message });
+            res.status(400).json({ error: error.message });
         });
 
         clientReq.write(params);
@@ -611,8 +587,117 @@ const makePayment = async (req, res) => {
     }
 };
 
+const verifyPayment = async (reference, res) => {
+    try {
+        // Encode the reference parameter
+        const encodedReference = encodeURIComponent(reference);
+
+        // Make request to Paystack API to verify payment
+        const options = {
+            hostname: 'api.paystack.co',
+            port: 443,
+            path: `/transaction/verify/${encodedReference}`, // Use the encoded reference
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
+                'Content-Type': 'application/json'
+            }
+        };
+
+        // Make the verification request
+        const apiRes = await new Promise((resolve, reject) => {
+            const req = https.request(options, res => {
+                let data = '';
+                res.on('data', chunk => {
+                    data += chunk;
+                });
+                res.on('end', () => {
+                    resolve(JSON.parse(data));
+                });
+            });
+
+            req.on('error', error => {
+                reject(error);
+            });
+
+            req.end();
+        });
+
+        // Handle the response from Paystack API
+        console.log(apiRes);
+
+        // Check if payment verification was successful
+        if (apiRes && apiRes.status != null && apiRes.status === true) {
+            console.log('Payment verified successfully');
+            res.status(200).json({ message: 'Payment verified successfully' });
+        } else {
+            console.log('Payment verification failed:', apiRes.message);
+            res.status(400).json({ error: 'Payment verification failed', message: apiRes.message });
+        }
+    } catch (error) {
+        console.error('Error verifying payment:', error);
+        res.status(500).json({ error: 'Error verifying payment' });
+    }
+};
 
 
 
- module.exports = ({ usersLandingPage, createShippingLabel, createLabelPagePost, shippingHistory,viewLabelInfo, editUserInformation, upload, editUserInformationPost, contactUsPage, logout ,shippingAmount,generatePdfShipping, makePayment });
+
+
+
+
+// const verifyPayment = async (reference, res) => {
+//     try {
+//         // Make request to Paystack API to verify payment
+//         const options = {
+//             hostname: 'api.paystack.co',
+//             port: 443,
+//             path: `/transaction/verify/${reference}`,
+//             method: 'GET',
+//             headers: {
+//                 Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
+//                 'Content-Type': 'application/json'
+//             }
+//         };
+
+//         // Make the verification request
+//         const apiRes = await new Promise((resolve, reject) => {
+//             const req = https.request(options, res => {
+//                 let data = '';
+//                 res.on('data', chunk => {
+//                     data += chunk;
+//                 });
+//                 res.on('end', () => {
+//                     resolve(JSON.parse(data));
+//                 });
+//             });
+
+//             req.on('error', error => {
+//                 reject(error);
+//             });
+
+//             req.end();
+//         });
+
+//         // Handle the response from Paystack API
+//         console.log('Payment verification response:', apiRes);
+
+//         // Check if payment verification was successful
+//         if (apiRes && apiRes.status != null && apiRes.status === true) {
+//             console.log('Payment verified successfully');
+//             res.status(200).json({ message: 'Payment verified successfully' });
+//         } else {
+//             console.log('Payment verification failed:', apiRes.message);
+//             res.status(400).json({ error: 'Payment verification failed', message: apiRes.message });
+//         }
+//     } catch (error) {
+//         console.error('Error verifying payment:', error);
+//         res.status(500).json({ error: 'Error verifying payment' });
+//     }
+// };
+
+
+
+
+ module.exports = ({ usersLandingPage, createShippingLabel, createLabelPagePost, shippingHistory,viewLabelInfo, editUserInformation, upload, editUserInformationPost, contactUsPage, logout ,shippingAmount,generatePdfShipping,  makePayment, verifyPayment });
 
