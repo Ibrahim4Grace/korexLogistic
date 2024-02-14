@@ -14,7 +14,7 @@ const MongoStore = require('connect-mongo');
 const morgan = require('morgan');
 const Chat = require('./models/chat');
 const bodyParser = require('body-parser');
-const nodmon = require('nodemon');
+const nodemon = require('nodemon');
 const http = require('http');
 const socketIO = require('socket.io');
 const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
