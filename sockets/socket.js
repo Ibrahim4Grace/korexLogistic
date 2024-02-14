@@ -1,23 +1,36 @@
 const socketIO = require("socket.io");
 const session = require("express-session");
+const MongoDBStore = require('connect-mongodb-session')(session); // Import MongoDBStore
 const passport = require("passport");
 const Chat = require('../models/chat');
-const chatIoSetup = (server, app, wrap, Chat,) => {
+
+
+const chatIoSetup = (server, app, wrap, Chat) => {
   const io = socketIO(server);
-
   global.io = io;
-
   const chatIo = io.of('/chat');
 
-  const sessionMiddleware = session({
-    secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-      secure: false,
-      maxAge: 24 * 60 * 60 * 1000
-    },
+   // Configure MongoDBStore for session storage
+   const store = new MongoDBStore({
+    uri: process.env.MONGODB_URI,
+    collection: 'sessions'
   });
+
+ // Catch errors
+ store.on('error', function(error) {
+  console.error(error);
+});
+
+const sessionMiddleware = session({
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    secure: false,
+    maxAge: 24 * 60 * 60 * 1000
+  },
+  store: store // Use MongoDBStore for session storage
+});
 
   chatIo.use(wrap(sessionMiddleware));
   chatIo.use(wrap(passport.initialize()));

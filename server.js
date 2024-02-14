@@ -10,7 +10,7 @@ const session = require('express-session');
 const methodOverride = require('method-override');
 const connectToMongoDB = require('./database/conn');
 const cors = require('cors');
-const MongoStore = require('connect-mongo');
+const MongoDBStore = require('connect-mongodb-session')(session);
 const morgan = require('morgan');
 const Chat = require('./models/chat');
 const bodyParser = require('body-parser');
@@ -18,7 +18,6 @@ const nodemon = require('nodemon');
 const http = require('http');
 const socketIO = require('socket.io');
 const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
-
 const chatIoSetup = require("./sockets/socket");
 const notificationIoSetup = require("./sockets/notification");
 const ejs = require('ejs');
@@ -48,7 +47,7 @@ connectToMongoDB()
   .then(() => {
     // Start the server after MongoDB connection is established
     const port = process.env.PORT;
-    server.listen(port, () => {
+    app.listen(port, () => {
       console.log(`Server started on port ${port}`);
     });
   })
@@ -56,16 +55,18 @@ connectToMongoDB()
     console.error('Unable to start the server:', err.message);
 });
   
-//To store our session
-const store = new MongoStore({
-  mongoUrl: process.env.MONGODB_URI,
-  collection: 'sessions',
-  mongooseConnection: mongoose.connection,
+
+const store = new MongoDBStore({
+  uri: process.env.MONGODB_URI,
+  collection: 'sessions'
 });
 
-store.on('error', function (error) {
-  console.error('Session store error:', error);
+
+//Catch errors
+store.on('error', function(error) {
+  console.error(error);
 });
+
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -76,6 +77,7 @@ app.use(session({
     maxAge: 1000 * 60 * 60, // Set maxAge to 1 hour
   },
 }));
+
 
 
 // TO CALL OUR EJS
