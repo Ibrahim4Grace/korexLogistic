@@ -84,6 +84,11 @@ const labelSchema = new mongoose.Schema({
     statusMessage:{
         type: String,
     },
+    reference:{
+        type: String,
+        required:true,
+        unique:true,
+    },
     date_added: {
         type: Date,
         default: Date.now()

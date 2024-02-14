@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {checkAuthenticated, checkNotAuthenticated} = require ('../middleware/authentication');
 
-const { usersLandingPage, createShippingLabel, createLabelPagePost, shippingHistory,viewLabelInfo, editUserInformation, upload,  editUserInformationPost, contactUsPage, logout ,shippingAmount,generatePdfShipping, makePayment ,verifyPayment} = require('../controller/userController');
+const { usersLandingPage, createShippingLabel, createLabelPagePost, shippingHistory,viewLabelInfo, editUserInformation, upload,  editUserInformationPost, contactUsPage, logout ,shippingAmount,generatePdfShipping, makePayment } = require('../controller/userController');
 
 router.get('/welcome',checkNotAuthenticated, usersLandingPage);
 router.get('/createLabel', checkNotAuthenticated, createShippingLabel);
@@ -24,7 +24,7 @@ router.get('/generate-pdf',checkNotAuthenticated,  generatePdfShipping);
 //payment 
 router.post('/pay', makePayment)
 //verify payment 
-router.get('/verify-payment/:reference', verifyPayment)
+// router.get('/verify-payment/:reference', verifyPayment)
 
 
 

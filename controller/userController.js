@@ -552,99 +552,61 @@ const generatePdfShipping = (req, res) =>{
 //     // Replace this with your Paystack secret key from environment variables
 //     const secretKey = process.env.PAYSTACK_SECRET;
 
-//         // Send response to client with necessary payment details
+//         Send response to client with necessary payment details
 //     // res.json({ senderName, senderEmail, secretKey, amount, reference }); 
 //     res.json({ name, email,amount, secretKey,  reference }); 
 // };
 
+
 const makePayment = async (req, res) => {
     try {
+        const { name, email, amount } = req.body; // Extract relevant data from request body
+        const secretKey = process.env.PAYSTACK_SECRET;
+        // // Generate a random reference for the transaction
+        // const reference = '' + Math.floor(Math.random() * 1000000000);
 
-        const { name, email, amount  } = req.body;
-        // params
+        // Prepare the parameters for initializing the transaction
         const params = JSON.stringify({
-            "name": name,
-          "email": email,
-          "amount": amount * 100,
-          
-        })
-        // options
-        const options = {
-          hostname: 'api.paystack.co',
-          port: 443,
-          path: '/transaction/initialize',
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
-            'Content-Type': 'application/json'
-          }
-        }
-        // client request
-        const clientReq = https.request(options, apiRes => {
-          let data = ''
-          apiRes.on('data', (chunk) => {
-            data += chunk
-          });
-          apiRes.on('end', () => {
-            console.log(JSON.parse(data));
-            return res.status(200).json(data);
-          })
-        }).on('error', error => {
-          console.error(error)
-          return res.status(400).json(error.message);
-        })
-        clientReq.write(params)
-        clientReq.end()
-  
-      } catch (error) {
-        // Handle any errors that occur during the request
-        console.error(error);
-        res.status(500).json({ error: 'An error occurred' });
-      }
-};
-const verifyPayment = async (req, res) => {
-    const reference = req.params.reference;
-    try {
+            name,
+            email,
+            amount: amount * 100, // Convert amount to kobo (1 Naira = 100 kobo)
+            secretKey,
+            // reference
+        });
+
+        // Set up options for making the request to Paystack API
         const options = {
             hostname: 'api.paystack.co',
             port: 443,
-            path: `/transaction/verify/${reference}`,
-            method: 'GET',
+            path: '/transaction/initialize',
+            method: 'POST',
             headers: {
-                Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`
+                Authorization: `Bearer ${secretKey}`,
+                'Content-Type': 'application/json'
             }
         };
 
-        const apiReq = https.request(options, (apiRes) => {
+        // Make the request to initialize the transaction
+        const clientReq = https.request(options, async apiRes => {
             let data = '';
-
             apiRes.on('data', (chunk) => {
                 data += chunk;
             });
-
-            apiRes.on('end', () => {
-                try {
-                    const responseData = JSON.parse(data); // Parse the response data
-                    console.log(responseData);
-                    res.status(200).json(responseData); // Send parsed data as JSON response
-                } catch (error) {
-                    console.error('Error parsing JSON data:', error);
-                    res.status(500).json({ error: 'Error parsing JSON data' });
-                }
+            apiRes.on('end', async () => {
+                console.log(JSON.parse(data));
+                // Verify payment after initializing the transaction
+                // await verifyPayment(reference, res);
             });
+        }).on('error', error => {
+            console.error(error);
+            return res.status(400).json({ error: error.message });
         });
 
-        apiReq.on('error', (error) => {
-            console.error('Error making API request:', error);
-            res.status(500).json({ error: 'An error occurred' });
-        });
-
-        // End the request
-        apiReq.end();
+        clientReq.write(params);
+        clientReq.end();
 
     } catch (error) {
-        // Handle any errors that occur during the request
-        console.error('Error in try-catch block:', error);
+        console.error(error);
         res.status(500).json({ error: 'An error occurred' });
     }
 };
@@ -652,5 +614,5 @@ const verifyPayment = async (req, res) => {
 
 
 
- module.exports = ({ usersLandingPage, createShippingLabel, createLabelPagePost, shippingHistory,viewLabelInfo, editUserInformation, upload, editUserInformationPost, contactUsPage, logout ,shippingAmount,generatePdfShipping, makePayment ,verifyPayment});
+ module.exports = ({ usersLandingPage, createShippingLabel, createLabelPagePost, shippingHistory,viewLabelInfo, editUserInformation, upload, editUserInformationPost, contactUsPage, logout ,shippingAmount,generatePdfShipping, makePayment });
 
