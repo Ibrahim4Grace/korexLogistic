@@ -1,11 +1,9 @@
 const express = require(`express`)
-const axios = require('axios');
 const bcrypt = require('bcryptjs');
 const nodemailer = require(`nodemailer`);
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs');
-const app = express();
 const PDFDocument = require('pdfkit');
 const generateTrackingID = require('../utils/tracking');
 const  shippingLabel  = require('../models/shippingLabel');
@@ -15,7 +13,6 @@ const Notification = require('../models/notification');
 const notificationIo = io.of('/notifications');
 const https = require('https');
 
-const lodash = require('lodash');
 
 // Send email to the applicant
 const transporter = nodemailer.createTransport({
@@ -122,7 +119,7 @@ const createLabelPagePost =  async(req, res) => {
         }
 
        // Fetch the payment details from the database
-       const payment = await Payment.findOne({ userId }).sort({ createdAt: -1 });
+       const payment = await Payment.findOne({ userId }).sort({ date_added: -1 });
        if (!payment) {
            throw new Error('Payment details not found');
        }
@@ -233,7 +230,6 @@ const shippingHistory = async (req, res) => {
        const totalPosts = await shippingLabel.countDocuments();
        const totalPages = Math.ceil(totalPosts / perPage);
         // Fetch payment details based on the shippingLabelId
-    //    const userPayment = await Payment.findOne({userId: user._id });
        const myShippingHistory = await shippingLabel.find({ userId: user._id })
        .sort({ date_added: -1 }) // Sort by date_added in descending order
        .skip((page - 1) * perPage)
@@ -250,7 +246,6 @@ const shippingHistory = async (req, res) => {
 
 const viewLabelInfo = async (req, res) => {
     try {
-
         // Check if user is logged in
         if (!req.session.user_id && !req.session.username) {
             req.flash('error_msg', 'Please login to access the App');
@@ -269,7 +264,6 @@ const viewLabelInfo = async (req, res) => {
            // Fetch shippingLabel details based on the shippingLabelId
         const shippingInfo = await shippingLabel.findOne({ _id: userId }).populate('paymentId');
 
-        
          if (!shippingInfo) {
             return res.status(404).send(`Label information not found`);
         }

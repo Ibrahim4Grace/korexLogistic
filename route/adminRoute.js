@@ -65,7 +65,7 @@ router.post('/calculate-shipping-fees', checkAuthenticated, shippingAmounts);
 router.post('/payment', userMakePayment);
 
 //verify payment 
-router.get('/verify-payment/:reference', userVerifyPayment);
+router.get('/verifyPayment/:reference', userVerifyPayment);
 
 
 module.exports = router;

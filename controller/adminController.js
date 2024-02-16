@@ -828,14 +828,17 @@ const createNewLabelPost = async (req, res) => {
   
     try {
 
-        let newTrackingID = trackingID;
-  
+      let newTrackingID = trackingID;
       const existingShippingLabel = await shippingLabel.findOne({ trackingID });
-      if (existingShippingLabel) {
-        // Generate a new unique tracking number
-        newTrackingID = await generateTrackingID();
-        
+      if (existingShippingLabel) { 
+          newTrackingID =  generateTrackingID(); // Generate a new tracking number
       }
+
+       // Fetch the payment details from the database
+       const payment = await Payment.findOne({ _id }).sort({ date_added: -1 });
+       if (!payment) {
+           throw new Error('Payment details not found');
+       }
   
         const newShippingLabel = new shippingLabel({
             senderName,
@@ -854,6 +857,8 @@ const createNewLabelPost = async (req, res) => {
             recipientState,
             shippingAmount,
             trackingID: newTrackingID,
+            statusMessage: 'Unknown Status check back later', // Set initial status here
+            paymentId: payment._id // Link the payment to the shipping label
         
         });
 
@@ -1881,12 +1886,14 @@ const userVerifyPayment = async (req, res) => {
             apiRes.on('end', async () => {
                 try {
                     const responseData = JSON.parse(data);
-                    if (responseData.status === true && responseData.data.status === 'success') {
-                        // Payment is successful, update payment status in the database
+                    if (responseData.status && responseData.data.status === 'success') {
+                       // Payment is successful, update payment status in the database
                         await Payment.findOneAndUpdate({ reference }, { $set: { status: 'success' } });
+                        console.log('Payment verified successfully');
                         res.json({ success: true, message: 'Payment verified successfully' });
                     } else {
-                        // Payment verification failed
+                          // Payment verification failed
+                        console.log('Payment verification failed');
                         res.json({ success: false, message: 'Payment verification failed' });
                     }
                 } catch (error) {
