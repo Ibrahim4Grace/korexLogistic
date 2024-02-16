@@ -9,6 +9,7 @@ const app = express();
 const PDFDocument = require('pdfkit');
 const generateTrackingID = require('../utils/tracking');
 const  shippingLabel  = require('../models/shippingLabel');
+const  Payment   = require('../models/payment');
 const  User  = require('../models/User');
 const Notification = require('../models/notification');
 const notificationIo = io.of('/notifications');
@@ -120,15 +121,23 @@ const createLabelPagePost =  async(req, res) => {
             newTrackingID =  generateTrackingID(); // Generate a new tracking number
         }
 
+       // Fetch the payment details from the database
+       const payment = await Payment.findOne({ userId }).sort({ createdAt: -1 });
+       if (!payment) {
+           throw new Error('Payment details not found');
+       }
+       console.log('Payment retrieved:', payment);
 
         const newShippingLabel = new shippingLabel({
             senderName, senderEmail, senderNumber, selectMembership, senderAddress, senderCity,
             senderState, shippingMethod, recipientName, recipientEmail, recipientNumber,
             recipientAddress, recipientCity, recipientState, shippingAmount, trackingID: newTrackingID,
-            userId,statusMessage: 'Unknown Status check back later' // Set initial status here
+            userId,statusMessage: 'Unknown Status check back later', // Set initial status here
+            paymentId: payment._id // Link the payment to the shipping label
         
         });
         await newShippingLabel.save();
+        console.log(newShippingLabel);
 
         // Create a notification for the admin
         const newNotification = new Notification({
@@ -223,11 +232,14 @@ const shippingHistory = async (req, res) => {
        const perPage = 10;  // Number of items per page
        const totalPosts = await shippingLabel.countDocuments();
        const totalPages = Math.ceil(totalPosts / perPage);
-
+        // Fetch payment details based on the shippingLabelId
+    //    const userPayment = await Payment.findOne({userId: user._id });
        const myShippingHistory = await shippingLabel.find({ userId: user._id })
        .sort({ date_added: -1 }) // Sort by date_added in descending order
        .skip((page - 1) * perPage)
-       .limit(perPage);
+       .limit(perPage)
+       .populate('paymentId'); // Populate the 'payment' field
+       
 
         res.render('users/shippingHistory', {user, myShippingHistory, totalPages, currentPage: page});
     } catch (err) {
@@ -255,7 +267,8 @@ const viewLabelInfo = async (req, res) => {
         const userId = req.params.mu_id;
         
            // Fetch shippingLabel details based on the shippingLabelId
-         const shippingInfo = await shippingLabel.findOne({ _id: userId });
+        const shippingInfo = await shippingLabel.findOne({ _id: userId }).populate('paymentId');
+
         
          if (!shippingInfo) {
             return res.status(404).send(`Label information not found`);
@@ -501,6 +514,8 @@ const shippingAmount = (req, res) => {
     res.json({ shippingFee: shippingFee.toFixed(2) });
 };
 
+
+
 const generatePdfShipping = (req, res) =>{
 
    const {senderName,senderNumber,senderAddress,senderCity,senderState,recipientName,recipientNumber,recipientAddress,recipientCity,recipientState,trackingID,shippingAmount,deliveryDay,deliveryDate,deliveryMonth,statusMessage } = req.query;
@@ -537,20 +552,17 @@ const generatePdfShipping = (req, res) =>{
     doc.end();
 };
 
-
+//makePayment function
 const makePayment = async (req, res) => {
     try {
-        const { name, email, amount } = req.body; // Extract relevant data from request body
+        const { name, email, amount } = req.body;
 
-        // Prepare the parameters for initializing the transaction
         const params = JSON.stringify({
             name,
             email,
-            amount: amount * 100, // Convert amount to kobo (1 Naira = 100 kobo)
-           
+            amount: amount * 100,
         });
 
-        // Set up options for making the request to Paystack API
         const options = {
             hostname: 'api.paystack.co',
             port: 443,
@@ -562,142 +574,99 @@ const makePayment = async (req, res) => {
             }
         };
 
-        // Make the request to initialize the transaction
         const clientReq = https.request(options, async apiRes => {
             let data = '';
             apiRes.on('data', (chunk) => {
                 data += chunk;
             });
             apiRes.on('end', async () => {
-                const responseData = JSON.parse(data);
-                // Send the authorization URL back to the client
-                res.json(responseData);
+                try {
+                    const responseData = JSON.parse(data);
+
+                    // Save payment details to the database
+                    const payment = new Payment({
+                        name,
+                        email,
+                        amount,
+                        reference: responseData.data.reference,
+                        userId: req.session.user_id
+                    });
+                    await payment.save();
+                    console.log('Payment saved:', payment);
+                    // Send the authorization URL back to the client
+                    res.json(responseData);
+               
+                } catch (error) {
+                    console.error('Error processing payment response:', error);
+                    res.status(500).json({ error: 'An error occurred while processing payment response' });
+                }
             });
         }).on('error', error => {
-            console.error(error);
-            res.status(400).json({ error: error.message });
+            console.error('Payment request error:', error);
+            res.status(400).json({ error: 'Failed to initialize payment' });
         });
 
         clientReq.write(params);
         clientReq.end();
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'An error occurred' });
+        console.error('Error making payment:', error);
+        res.status(500).json({ error: 'An error occurred while making payment' });
     }
 };
 
-const verifyPayment = async (reference, res) => {
-    try {
-        // Encode the reference parameter
-        const encodedReference = encodeURIComponent(reference);
 
-        // Make request to Paystack API to verify payment
+const verifyPayment = async (req, res) => {
+    try {
+        const reference = req.params.reference; // Extract reference from URL parameter
+        console.log(reference);
         const options = {
             hostname: 'api.paystack.co',
             port: 443,
-            path: `/transaction/verify/${encodedReference}`, // Use the encoded reference
+            path: `/transaction/verify/${encodeURIComponent(reference)}`,
             method: 'GET',
             headers: {
-                Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
-                'Content-Type': 'application/json'
+                Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`
             }
         };
 
-        // Make the verification request
-        const apiRes = await new Promise((resolve, reject) => {
-            const req = https.request(options, res => {
-                let data = '';
-                res.on('data', chunk => {
-                    data += chunk;
-                });
-                res.on('end', () => {
-                    resolve(JSON.parse(data));
-                });
+        const apiReq = https.request(options, apiRes => {
+            let data = '';
+            apiRes.on('data', (chunk) => {
+                data += chunk;
             });
-
-            req.on('error', error => {
-                reject(error);
+            apiRes.on('end', async () => {
+                try {
+                    const responseData = JSON.parse(data);
+                    if (responseData.status && responseData.data.status === 'success') {
+                       // Payment is successful, update payment status in the database
+                        await Payment.findOneAndUpdate({ reference }, { $set: { status: 'success' } });
+                        console.log('Payment verified successfully');
+                        res.json({ success: true, message: 'Payment verified successfully' });
+                    } else {
+                          // Payment verification failed
+                        console.log('Payment verification failed');
+                        res.json({ success: false, message: 'Payment verification failed' });
+                    }
+                } catch (error) {
+                    console.error('Error parsing payment verification response:', error);
+                    res.status(500).json({ error: 'An error occurred while verifying payment' });
+                }
             });
-
-            req.end();
+        }).on('error', error => {
+            console.error('Payment verification request error:', error);
+            res.status(400).json({ error: 'Failed to verify payment' });
         });
 
-        // Handle the response from Paystack API
-        console.log(apiRes);
+        apiReq.end();
 
-        // Check if payment verification was successful
-        if (apiRes && apiRes.status != null && apiRes.status === true) {
-            console.log('Payment verified successfully');
-            res.status(200).json({ message: 'Payment verified successfully' });
-        } else {
-            console.log('Payment verification failed:', apiRes.message);
-            res.status(400).json({ error: 'Payment verification failed', message: apiRes.message });
-        }
     } catch (error) {
         console.error('Error verifying payment:', error);
-        res.status(500).json({ error: 'Error verifying payment' });
+        res.status(500).json({ error: 'An error occurred while verifying payment' });
     }
 };
 
 
 
-
-
-
-
-// const verifyPayment = async (reference, res) => {
-//     try {
-//         // Make request to Paystack API to verify payment
-//         const options = {
-//             hostname: 'api.paystack.co',
-//             port: 443,
-//             path: `/transaction/verify/${reference}`,
-//             method: 'GET',
-//             headers: {
-//                 Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
-//                 'Content-Type': 'application/json'
-//             }
-//         };
-
-//         // Make the verification request
-//         const apiRes = await new Promise((resolve, reject) => {
-//             const req = https.request(options, res => {
-//                 let data = '';
-//                 res.on('data', chunk => {
-//                     data += chunk;
-//                 });
-//                 res.on('end', () => {
-//                     resolve(JSON.parse(data));
-//                 });
-//             });
-
-//             req.on('error', error => {
-//                 reject(error);
-//             });
-
-//             req.end();
-//         });
-
-//         // Handle the response from Paystack API
-//         console.log('Payment verification response:', apiRes);
-
-//         // Check if payment verification was successful
-//         if (apiRes && apiRes.status != null && apiRes.status === true) {
-//             console.log('Payment verified successfully');
-//             res.status(200).json({ message: 'Payment verified successfully' });
-//         } else {
-//             console.log('Payment verification failed:', apiRes.message);
-//             res.status(400).json({ error: 'Payment verification failed', message: apiRes.message });
-//         }
-//     } catch (error) {
-//         console.error('Error verifying payment:', error);
-//         res.status(500).json({ error: 'Error verifying payment' });
-//     }
-// };
-
-
-
-
- module.exports = ({ usersLandingPage, createShippingLabel, createLabelPagePost, shippingHistory,viewLabelInfo, editUserInformation, upload, editUserInformationPost, contactUsPage, logout ,shippingAmount,generatePdfShipping,  makePayment, verifyPayment });
+ module.exports = ({ usersLandingPage, createShippingLabel, createLabelPagePost, shippingHistory,viewLabelInfo, editUserInformation, upload, editUserInformationPost, contactUsPage, logout ,shippingAmount,generatePdfShipping, makePayment, verifyPayment });
 

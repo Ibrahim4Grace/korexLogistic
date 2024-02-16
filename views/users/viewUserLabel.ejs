@@ -146,16 +146,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div style="padding-top: 0;">
-                                            <div  align="center"class="devicewidthinner">
-                                                <div>
-                                                    <div class="divwords"> Sender Address</div>
-                                                    <span class="spanword">  <%= shippingInfo.senderAddress %> </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                  
                                     <div>
                                         <div style="padding-top: 0;">
                                             <div  align="center"class="devicewidthinner">
@@ -329,7 +320,27 @@
                                         <div style="padding-top: 0;">
                                             <div  align="center"class="devicewidthinner">
                                                 <div>
-                                                    <div class="divwords">Create Shipment date</div>
+                                                    <div class="divwords">Payment Reference</div>
+                                                    <span class="spanword">  <%= shippingInfo.paymentId.reference %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Payment Status</div>
+                                                    <span class="spanword">  <%= shippingInfo.paymentId.status %> </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="padding-top: 0;">
+                                            <div  align="center"class="devicewidthinner">
+                                                <div>
+                                                    <div class="divwords">Shipment Creation date</div>
                                                     <span class="spanword">  <%= shippingInfo.date_added.toLocaleString() %> </span>
                                                 </div>
                                             </div>

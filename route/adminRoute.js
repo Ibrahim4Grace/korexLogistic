@@ -3,7 +3,7 @@ const router = express.Router();
 const {checkAuthenticated, checkNotAuthenticated} = require ('../middleware/authentication');
 
 
-const { adminloginPage, adminloginPagePost, adminDashboard, newNotification, deleteNotification, addAdmin, uploads, addAdminPost, viewAllAdmin, adminProfilePage,  editAdminPage, editAdminPagePost, deleteAdmin, addNewUser, upload, addNewUserPost, registeredUser,searchUsers, userProfile, editUserProfile, editUserProfilePost, deleteUser, createNewLabel, createNewLabelPost, searchWithTrackingId, shippingLabelHistory, viewLabelInformation, editLabelHistory, editLabelHistoryPost, deleteShipping, addKorexStaff, upl, korexStaffPost, allKorexStaff,searchStaffResult, staffProfile, editMyStaff, editStaffProfilePost, deleteStaff, staffPayment, staffPaymentPost, searchStaffPayment, deletePayment, companyExpenses, upld, companyExpensesPost, searchcompanyExpenses, contactAdmin, adminLogout,staffApi, userAndAdminChat,userAndAdminChatPost,chatRooms, shippingAmounts
+const { adminloginPage, adminloginPagePost, adminDashboard, newNotification, deleteNotification, addAdmin, uploads, addAdminPost, viewAllAdmin, adminProfilePage,  editAdminPage, editAdminPagePost, deleteAdmin, addNewUser, upload, addNewUserPost, registeredUser,searchUsers, userProfile, editUserProfile, editUserProfilePost, deleteUser, createNewLabel, createNewLabelPost, searchWithTrackingId, shippingLabelHistory, viewLabelInformation, editLabelHistory, editLabelHistoryPost, deleteShipping, addKorexStaff, upl, korexStaffPost, allKorexStaff,searchStaffResult, staffProfile, editMyStaff, editStaffProfilePost, deleteStaff, staffPayment, staffPaymentPost, searchStaffPayment, deletePayment, companyExpenses, upld, companyExpensesPost, searchcompanyExpenses, contactAdmin, adminLogout,staffApi, userAndAdminChat,userAndAdminChatPost,chatRooms, shippingAmounts,userMakePayment,userVerifyPayment
 } = require('../controller/adminController');
 
 router.get('/welcomeAdmin', checkNotAuthenticated, adminloginPage);
@@ -61,8 +61,11 @@ router.get('/chats/:room', chatRooms);
 //CALCULATING SHIPMENT FEES
 router.post('/calculate-shipping-fees', checkAuthenticated, shippingAmounts);
 
-//INTEGRATING PAYSTACK PAYMENT 
-// router.post('/acceptpayment', initializePayment.acceptPayment);
+//payment 
+router.post('/payment', userMakePayment);
+
+//verify payment 
+router.get('/verify-payment/:reference', userVerifyPayment);
 
 
 module.exports = router;

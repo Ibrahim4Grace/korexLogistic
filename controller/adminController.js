@@ -15,6 +15,7 @@ const generateTrackingID = require('../utils/tracking');
 const   CompanyExpenses = require('../models/companyExpenses');
 const Notification = require('../models/notification');
 const  generateStatusMessage  = require('../utils/statusMessages');
+const  Payment   = require('../models/payment');
 const https = require('https');
 
 // Passport config
@@ -1795,82 +1796,118 @@ const shippingAmounts = (req, res) => {
     res.json({ shippingFee: shippingFee.toFixed(2) });
 };
 
-// const paystack = require('paystack')(process.env.PAYSTACK_SECRET_KEY);
+// makePayment function
+const userMakePayment = async (req, res) => {
+    try {
+        const { name, email, amount } = req.body;
 
-// //INTEGRATING PAYSTACK PAYMENT 
-// const processPayment = async (req, res) => {
-//     try {
-//         const { amount, email, reference } = req.body;
+        const params = JSON.stringify({
+            name,
+            email,
+            amount: amount * 100,
+        });
 
-//         // Initiate payment with Paystack API
-//         const paymentResponse = await paystack.transaction.initialize({
-//             amount: amount * 100, // Paystack API expects amount in kobo (multiply by 100)
-//             email,
-//             reference,
-//         });
+        const options = {
+            hostname: 'api.paystack.co',
+            port: 443,
+            path: '/transaction/initialize',
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`,
+                'Content-Type': 'application/json'
+            }
+        };
 
-//         // Send the payment authorization URL to the client
-//         res.status(200).json({ success: true, authorization_url: paymentResponse.data.authorization_url });
-//     } catch (error) {
-//         // Handle payment processing errors
-//         console.error('Error processing payment:', error);
-//         res.status(500).json({ success: false, message: 'Failed to process payment' });
-//     }
-// };
+        const clientReq = https.request(options, async apiRes => {
+            let data = '';
+            apiRes.on('data', (chunk) => {
+                data += chunk;
+            });
+            apiRes.on('end', async () => {
+                try {
+                    const responseData = JSON.parse(data);
 
+                    // Save payment details to the database
+                    const payment = new Payment({
+                        name,
+                        email,
+                        amount,
+                        reference: responseData.data.reference,
+                        userId: req.session.user_id
+                    });
+                    await payment.save();
+                    console.log('Payment saved:', payment);
+                    // Send the authorization URL back to the client
+                    res.json(responseData);
+               
+                } catch (error) {
+                    console.error('Error processing payment response:', error);
+                    res.status(500).json({ error: 'An error occurred while processing payment response' });
+                }
+            });
+        }).on('error', error => {
+            console.error('Payment request error:', error);
+            res.status(400).json({ error: 'Failed to initialize payment' });
+        });
 
+        clientReq.write(params);
+        clientReq.end();
 
-// const payStack = {
+    } catch (error) {
+        console.error('Error making payment:', error);
+        res.status(500).json({ error: 'An error occurred while making payment' });
+    }
+};
 
-//     acceptPayment: async(req, res) => {
-//       try {
-//         // request body from the clients
-//         const email = req.body.senderEmail;
-//         const amount = req.body.shippingAmount;
-//         // params
-//         const params = JSON.stringify({
-//           "email": email,
-//           "amount": amount * 100
-//         })
-//         // options
-//         const options = {
-//           hostname: 'api.paystack.co',
-//           port: 443,
-//           path: '/transaction/initialize',
-//           method: 'POST',
-//           headers: {
-//             Authorization: process.env.PAYSTACK_SECRET_KEY, // where you place your secret key copied from your dashboard
-//             'Content-Type': 'application/json'
-//           }
-//         }
-//         // client request to paystack API
-//         const clientReq = https.request(options, apiRes => {
-//           let data = ''
-//           apiRes.on('data', (chunk) => {
-//             data += chunk
-//           });
-//           apiRes.on('end', () => {
-//             console.log(JSON.parse(data));
-//             return res.status(200).json(data);
-//           })
-//         }).on('error', error => {
-//           console.error(error)
-//         })
-//         clientReq.write(params)
-//         clientReq.end()
-        
-//       } catch (error) {
-//         // Handle any errors that occur during the request
-//         console.error(error);
-//         res.status(500).json({ error: 'An error occurred' });
-//       }
-//     },
-//   }
-  
-//   const initializePayment = payStack;
+const userVerifyPayment = async (req, res) => {
+    try {
+        const reference = req.params.reference; // Extract reference from URL parameter
+        console.log(reference);
+        const options = {
+            hostname: 'api.paystack.co',
+            port: 443,
+            path: `/transaction/verify/${encodeURIComponent(reference)}`,
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${process.env.PAYSTACK_SECRET}`
+            }
+        };
 
+        const apiReq = https.request(options, apiRes => {
+            let data = '';
+            apiRes.on('data', (chunk) => {
+                data += chunk;
+            });
+            apiRes.on('end', async () => {
+                try {
+                    const responseData = JSON.parse(data);
+                    if (responseData.status === true && responseData.data.status === 'success') {
+                        // Payment is successful, update payment status in the database
+                        await Payment.findOneAndUpdate({ reference }, { $set: { status: 'success' } });
+                        res.json({ success: true, message: 'Payment verified successfully' });
+                    } else {
+                        // Payment verification failed
+                        res.json({ success: false, message: 'Payment verification failed' });
+                    }
+                } catch (error) {
+                    console.error('Error parsing payment verification response:', error);
+                    res.status(500).json({ error: 'An error occurred while verifying payment' });
+                }
+            });
+        }).on('error', error => {
+            console.error('Payment verification request error:', error);
+            res.status(400).json({ error: 'Failed to verify payment' });
+        });
 
-module.exports = ({ adminloginPage, adminloginPagePost, adminDashboard, newNotification,deleteNotification, addAdmin, uploads, addAdminPost, viewAllAdmin, adminProfilePage, editAdminPage, editAdminPagePost, deleteAdmin, addNewUser, upload, addNewUserPost, registeredUser,searchUsers, userProfile, editUserProfile, editUserProfilePost, deleteUser, createNewLabel, createNewLabelPost, searchWithTrackingId, shippingLabelHistory, viewLabelInformation, editLabelHistory, editLabelHistoryPost, deleteShipping, addKorexStaff, upl, korexStaffPost, allKorexStaff, searchStaffResult, staffProfile, editMyStaff, editStaffProfilePost, deleteStaff, staffPayment, staffPaymentPost, searchStaffPayment, deletePayment, companyExpenses, upld, companyExpensesPost, searchcompanyExpenses, contactAdmin, adminLogout,staffApi, userAndAdminChat, userAndAdminChatPost,chatRooms, shippingAmounts
+        apiReq.end();
+
+    } catch (error) {
+        console.error('Error verifying payment:', error);
+        res.status(500).json({ error: 'An error occurred while verifying payment' });
+    }
+};
+
+module.exports = ({ adminloginPage, adminloginPagePost, adminDashboard, newNotification,deleteNotification, addAdmin, uploads, addAdminPost, viewAllAdmin, adminProfilePage, editAdminPage, editAdminPagePost, deleteAdmin, addNewUser, upload, addNewUserPost, registeredUser,searchUsers, userProfile, editUserProfile, editUserProfilePost, deleteUser, createNewLabel, createNewLabelPost, searchWithTrackingId, shippingLabelHistory, viewLabelInformation, editLabelHistory, editLabelHistoryPost, deleteShipping, addKorexStaff, upl, korexStaffPost, allKorexStaff, searchStaffResult, staffProfile, editMyStaff, editStaffProfilePost, deleteStaff, staffPayment, staffPaymentPost, searchStaffPayment, deletePayment, companyExpenses, upld, companyExpensesPost, searchcompanyExpenses, contactAdmin, adminLogout,staffApi, userAndAdminChat, userAndAdminChatPost,chatRooms, shippingAmounts,userMakePayment,userVerifyPayment
 });
 
 

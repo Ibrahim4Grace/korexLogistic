@@ -202,7 +202,7 @@
                             <% } %>
                           </tbody>
                         </table>
-                        <div class="pagination">
+                        <div class="pagination" style="display: flex; align-items: center;">
                           <% for (let i=1; i <=totalPages; i++) { %>
                               <a href="/users/welcome?page=<%= i %>"
                                   class="<%= currentPage === i ? 'active' : '' %>">

@@ -24,7 +24,6 @@ router.get('/generate-pdf',checkNotAuthenticated,  generatePdfShipping);
 //payment 
 router.post('/pay', makePayment)
 
-
 //verify payment 
 router.get('/verify-payment/:reference', verifyPayment)
 

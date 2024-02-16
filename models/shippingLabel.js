@@ -84,10 +84,9 @@ const labelSchema = new mongoose.Schema({
     statusMessage:{
         type: String,
     },
-    reference:{
-        type: String,
-        required:true,
-        unique:true,
+    paymentId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Payment'
     },
     date_added: {
         type: Date,

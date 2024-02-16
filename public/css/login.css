@@ -118,6 +118,22 @@ text-decoration: none;
   animation: wave 3s ease-in-out infinite;
 }
 
+@media (min-width: 320px) and (max-width: 480px) {
+  .water-effect::before {
+    left: 41px;
+  }
+}
+@media (min-width: 481px) and (max-width: 767px) {
+  .water-effect::before {
+    left: 44px;
+  }
+}
+@media (min-width: 481px) and (max-width: 1024px) {
+  .water-effect::before {
+    left: 50px;
+  }
+}
+
 @keyframes wave {
   0%, 100% {
       clip-path: polygon(0 42%, 13% 48%, 26% 55%, 41% 64%, 56% 65%, 69% 58%, 84% 45%, 100% 38%, 100% 100%, 0% 100%);

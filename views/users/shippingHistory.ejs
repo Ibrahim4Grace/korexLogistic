@@ -67,10 +67,10 @@
                             <tr>
                                 <th>Recipient Name</th>
                                 <th>Recipient Number</th>
-                                <th>Recipient Address</th>
                                 <th>Recipient State</th>
                                 <th>Tracking Number</th>
-                                <th>Shipping Fees</th>
+                                <th>Payment Status</th>
+                                <th>Payment Reference</th>
                                 <th>Shipping Details</th>
                                 <th>Download Pdf</th>
                                
@@ -82,16 +82,16 @@
                                 <tr class="center">
                                   <td><%= shippingHistory.recipientName %></td>
                                   <td><%= shippingHistory.recipientNumber %></td>
-                                  <td><%= shippingHistory.recipientAddress %></td>
                                   <td><%= shippingHistory.recipientState %></td>
                                   <td><%= shippingHistory.trackingID %></td>
-                                  <td><%= shippingHistory.shippingAmount %></td>
-                                  
+                                  <td><%= shippingHistory.paymentId.status %></td>
+                                  <td><%= shippingHistory.paymentId.reference %></td>
                                   <td data-label="Profile">
                                     <a href="/users/viewUserLabel/<%- shippingHistory._id %>">
                                         View
                                     </a>
-                                </td>
+                                  </td>
+                                 
                                
                                 <td>
                                   <% if ( shippingHistory.senderName && shippingHistory.senderNumber && shippingHistory.senderAddress && shippingHistory.senderCity && shippingHistory.senderState && shippingHistory.recipientName && shippingHistory.recipientNumber && shippingHistory.recipientAddress && shippingHistory.recipientCity && shippingHistory.recipientState && shippingHistory.trackingID && shippingHistory.shippingAmount && shippingHistory.deliveryDay && shippingHistory.deliveryDate && shippingHistory.deliveryMonth && shippingHistory.statusMessage ) { %>
@@ -111,7 +111,7 @@
                             <% } %>
                           </tbody>
                         </table>
-                        <div class="pagination">
+                        <div class="pagination" style="display: flex; align-items: center;">
                           <% for (let i=1; i <=totalPages; i++) { %>
                               <a href="/users/shippingHistory?page=<%= i %>"
                                   class="<%= currentPage === i ? 'active' : '' %>">
