@@ -22,10 +22,10 @@ router.post('/calculate-shipping-fee', checkNotAuthenticated, shippingAmount);
 router.get('/generate-pdf',checkNotAuthenticated,  generatePdfShipping);
 
 //payment 
-router.post('/pay', makePayment)
+router.post('/pay', checkNotAuthenticated, makePayment)
 
 //verify payment 
-router.get('/verify-payment/:reference', verifyPayment)
+router.get('/verify-payment/:reference', checkNotAuthenticated, verifyPayment)
 
 
 module.exports = router;

@@ -45,9 +45,10 @@ app.use(cors({
 // Connect to MongoDB using this method because it returns a promise
 connectToMongoDB()
   .then(() => {
-    // Start the server after MongoDB connection is established
     const port = process.env.PORT;
-    app.listen(port, () => {
+    // app.listen
+    // server.listen allow socket to work .
+    server.listen(port, () => {
       console.log(`Server started on port ${port}`);
     });
   })

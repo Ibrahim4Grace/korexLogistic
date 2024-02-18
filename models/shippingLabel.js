@@ -67,7 +67,7 @@ const labelSchema = new mongoose.Schema({
     },
     trackingID:{
         type: String,
-
+        unique: true,
     },
     deliveryDay:{
         type: String,
@@ -87,6 +87,9 @@ const labelSchema = new mongoose.Schema({
     paymentId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Payment'
+    },
+    paymentReference: {
+        type: String,
     },
     date_added: {
         type: Date,

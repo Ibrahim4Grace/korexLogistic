@@ -73,14 +73,15 @@
                             <thead>
                               <tr>
                                   <th>Sender Name</th>
-                                  <th>Sender State</th>
                                   <th>Recipient Name</th>
                                   <th>Recipient State</th>
                                   <th>Shipping Method</th>
                                   <th>Tracking ID</th>
+                                  <th>Payment Status</th>
                                   <th>Shipping Details</th>
                                   <th>Update Shipment</th>
                                   <th>Delete</th>
+
                               </tr>
                            </thead>
                           <tbody>
@@ -88,11 +89,11 @@
                                 <tr class="center">
                                  
                                     <td> <%= shippingHistory.senderName %> </td>
-                                    <td> <%= shippingHistory.senderState %> </td>
                                     <td> <%= shippingHistory.recipientName %> </td>
                                     <td> <%= shippingHistory.recipientState %> </td>
                                     <td> <%= shippingHistory.shippingMethod %> </td>
                                     <td> <%= shippingHistory.trackingID%> </td>
+                                    <td><%= shippingHistory.paymentId.status %></td>
                                     <td data-label="Profile">
                                         <a href="/admin/viewLabelInfo/<%- shippingHistory._id %>">
                                             View

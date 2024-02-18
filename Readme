@@ -11,15 +11,17 @@ Package Tracking: Real-time package tracking enables users to monitor the status
 Shipping History: Users can view their complete shipping history, including past shipments and delivery details.
 Real-Time Chat Support: Our integrated chat feature enables users to communicate with administrators in real-time using Socket.IO.
 PDF Receipt Generation: After creating a shipping label, users can download a PDF receipt containing detailed information about their shipment, including sender and recipient details, tracking information, shipping amount, delivery date, and status message.
+
 Technologies Used:
 
-Frontend: HTML, CSS, EJS (Embedded JavaScript)
+Frontend: HTML, CSS, Javascript, EJS (Embedded JavaScript)
 Backend: Node.js, Express.js
 Database: MongoDB
-Authentication: JWT (JSON Web Tokens), Passport.js
+Authentication: JWT (JSON Web Tokens), Passport.js,Express-session
 Email Notifications: Nodemailer
 Real-Time Communication: Socket.IO
 PDF Generation: PDFKit
+
 Usage:
 
 Register an Account: Get started by registering an account to access all features.

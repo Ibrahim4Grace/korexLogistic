@@ -787,9 +787,9 @@ const deleteUser = (req, res) => {
 
 };
 
-const createNewLabel = async (req, res) => {
+const createNewLabel =  (req, res) => {
     const admin = req.user;
-    const newTrackingID = await generateTrackingID();
+    const newTrackingID = generateTrackingID();
     res.render('admin/createNewLabel', {admin, newTrackingID});
 };
 
@@ -797,6 +797,7 @@ const createNewLabelPost = async (req, res) => {
 
     const { senderName, senderEmail, senderNumber, selectMembership, senderAddress, senderCity, senderState, shippingMethod, recipientName, recipientEmail, recipientNumber, recipientAddress, recipientCity, recipientState,shippingAmount, trackingID } = req.body;
     const admin = req.user;
+    const userId = req.session.user_id;
     let errors = [];
 
     if (!senderName || !senderEmail || !senderNumber || !selectMembership || !senderAddress || !senderCity || !senderState || !shippingMethod || !recipientName || !recipientEmail || !recipientNumber || !recipientAddress || !recipientCity || !recipientState || !shippingAmount) {
@@ -831,14 +832,16 @@ const createNewLabelPost = async (req, res) => {
       let newTrackingID = trackingID;
       const existingShippingLabel = await shippingLabel.findOne({ trackingID });
       if (existingShippingLabel) { 
-          newTrackingID =  generateTrackingID(); // Generate a new tracking number
+          newTrackingID = await generateTrackingID(); // Generate a new tracking number
       }
 
        // Fetch the payment details from the database
-       const payment = await Payment.findOne({ _id }).sort({ date_added: -1 });
+       const payment = await Payment.findOne({ userId }).sort({ date_added: -1 });
        if (!payment) {
            throw new Error('Payment details not found');
        }
+       console.log('Payment retrieved:', payment);
+
   
         const newShippingLabel = new shippingLabel({
             senderName,
@@ -857,12 +860,12 @@ const createNewLabelPost = async (req, res) => {
             recipientState,
             shippingAmount,
             trackingID: newTrackingID,
-            statusMessage: 'Unknown Status check back later', // Set initial status here
-            paymentId: payment._id // Link the payment to the shipping label
-        
+            statusMessage: 'Unknown Status, check back later', // Set initial status here
+            paymentId: payment._id,// Link the payment to the shipping label
         });
 
         await newShippingLabel.save();
+        console.log(newShippingLabel.save())
         
         let msg = `
         <p><img src="cid:shipping" alt="shipping" style="width: 100%; max-width: 600px; height: auto;"/></p><br>
@@ -915,7 +918,10 @@ const createNewLabelPost = async (req, res) => {
                 console.log('Email sent:', info.response);
             }
            });
-        console.log('Shipping label created successfully');
+           console.log('Shipping label created successfully');
+           setTimeout(() => {
+               res.status(200).redirect('/admin/labelHistory');
+           }, 5000); 
     } catch (error) {
         console.error('Error creating shipping label:', error);
          res.status(500).json({ success: false, error: 'An error occurred while processing your request.' });
@@ -951,32 +957,32 @@ const searchWithTrackingId = async (req, res) => {
 
 const shippingLabelHistory = async (req, res) => {
     const admin = req.user;
-      const page = parseInt(req.query.page) || 1;
-      const limit = 10; 
-      const skip = (page - 1) * limit;
-
-      const shippingLabels = await shippingLabel.find()
-      .sort({ date_added: -1 }); // Sort by date_added in descending order
-
-      const totalShippingLabels = shippingLabels.length;
-      const totalPages = Math.ceil(totalShippingLabels / limit);
-
-      const myShippingHistory = shippingLabels.slice(skip, skip + limit);
+    //setting my pagination
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 10;  // Number of items per page
+    const totalPosts = await shippingLabel.countDocuments();
+    const totalPages = Math.ceil(totalPosts / perPage);
+     // Fetch payment details based on the shippingLabelId
+    const myShippingHistory = await shippingLabel.find()
+    .sort({ date_added: -1 }) // Sort by date_added in descending order
+    .skip((page - 1) * perPage)
+    .limit(perPage)
+    .populate('paymentId'); // Populate the 'payment' field
 
       res.render('admin/labelHistory', { admin, myShippingHistory, currentPage: page, totalPages });
 };
 
 const viewLabelInformation = async (req, res) => {
+
     try {
+        const admin = req.user; 
         const profileId = req.params.mu_id;
-        
            // Fetch shippingLabel details based on the shippingLabelId
-         const labelInfo = await shippingLabel.findOne({ _id: profileId });
+         const labelInfo = await shippingLabel.findOne({ _id: profileId }).populate('paymentId');
         
          if (!labelInfo) {
             return res.status(404).send(`Label information not found`);
         }
-        const admin = req.user; 
         res.render(`admin/viewLabelInfo`, { labelInfo, admin });
     } catch (err) {
         console.error(err);
@@ -1801,8 +1807,7 @@ const shippingAmounts = (req, res) => {
     res.json({ shippingFee: shippingFee.toFixed(2) });
 };
 
-// makePayment function
-const userMakePayment = async (req, res) => {
+const makePayment = async (req, res) => {
     try {
         const { name, email, amount } = req.body;
 
@@ -1864,7 +1869,8 @@ const userMakePayment = async (req, res) => {
     }
 };
 
-const userVerifyPayment = async (req, res) => {
+
+const verifyPayment = async (req, res) => {
     try {
         const reference = req.params.reference; // Extract reference from URL parameter
         console.log(reference);
@@ -1914,7 +1920,10 @@ const userVerifyPayment = async (req, res) => {
     }
 };
 
-module.exports = ({ adminloginPage, adminloginPagePost, adminDashboard, newNotification,deleteNotification, addAdmin, uploads, addAdminPost, viewAllAdmin, adminProfilePage, editAdminPage, editAdminPagePost, deleteAdmin, addNewUser, upload, addNewUserPost, registeredUser,searchUsers, userProfile, editUserProfile, editUserProfilePost, deleteUser, createNewLabel, createNewLabelPost, searchWithTrackingId, shippingLabelHistory, viewLabelInformation, editLabelHistory, editLabelHistoryPost, deleteShipping, addKorexStaff, upl, korexStaffPost, allKorexStaff, searchStaffResult, staffProfile, editMyStaff, editStaffProfilePost, deleteStaff, staffPayment, staffPaymentPost, searchStaffPayment, deletePayment, companyExpenses, upld, companyExpensesPost, searchcompanyExpenses, contactAdmin, adminLogout,staffApi, userAndAdminChat, userAndAdminChatPost,chatRooms, shippingAmounts,userMakePayment,userVerifyPayment
+
+
+
+module.exports = ({ adminloginPage, adminloginPagePost, adminDashboard, newNotification,deleteNotification, addAdmin, uploads, addAdminPost, viewAllAdmin, adminProfilePage, editAdminPage, editAdminPagePost, deleteAdmin, addNewUser, upload, addNewUserPost, registeredUser,searchUsers, userProfile, editUserProfile, editUserProfilePost, deleteUser, createNewLabel, createNewLabelPost, searchWithTrackingId, shippingLabelHistory, viewLabelInformation, editLabelHistory, editLabelHistoryPost, deleteShipping, addKorexStaff, upl, korexStaffPost, allKorexStaff, searchStaffResult, staffProfile, editMyStaff, editStaffProfilePost, deleteStaff, staffPayment, staffPaymentPost, searchStaffPayment, deletePayment, companyExpenses, upld, companyExpensesPost, searchcompanyExpenses, contactAdmin, adminLogout,staffApi, userAndAdminChat, userAndAdminChatPost,chatRooms, shippingAmounts,makePayment,verifyPayment
 });
 
 
