@@ -27,7 +27,7 @@ function payWithPaystack() {
         setTimeout(() => {
             console.log('Verifying payment for reference:', data.data.reference);
             verifyPayment(data.data.reference);
-        }, 5000); // Adjust delay as needed
+        }, 3000); // Adjust delay as needed
     })
     .catch(error => {
         console.error('Error initiating payment:', error);

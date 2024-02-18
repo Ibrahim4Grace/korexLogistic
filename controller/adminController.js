@@ -865,7 +865,7 @@ const createNewLabelPost = async (req, res) => {
         });
 
         await newShippingLabel.save();
-        console.log(newShippingLabel.save())
+        // console.log(newShippingLabel.save())
         
         let msg = `
         <p><img src="cid:shipping" alt="shipping" style="width: 100%; max-width: 600px; height: auto;"/></p><br>
@@ -1846,7 +1846,7 @@ const makePayment = async (req, res) => {
                         userId: req.session.user_id
                     });
                     await payment.save();
-                    console.log('Payment saved:', payment);
+                    // console.log('Payment saved:', payment);
                     // Send the authorization URL back to the client
                     res.json(responseData);
                

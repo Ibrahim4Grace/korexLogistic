@@ -134,7 +134,7 @@ const createLabelPagePost =  async(req, res) => {
         
         });
         await newShippingLabel.save();
-        console.log(newShippingLabel);
+        // console.log(newShippingLabel);
 
         // Create a notification for the admin
         const newNotification = new Notification({
@@ -586,7 +586,7 @@ const makePayment = async (req, res) => {
                         userId: req.session.user_id
                     });
                     await payment.save();
-                    console.log('Payment saved:', payment);
+                    // console.log('Payment saved:', payment);
                     // Send the authorization URL back to the client
                     res.json(responseData);
                
