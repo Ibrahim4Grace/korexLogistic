@@ -26,6 +26,7 @@ const transporter = nodemailer.createTransport({
 const phoneNumber = process.env.COMPANY_NUMBER;
 const emailAddress = process.env.COMPANY_EMAIL;
 
+
    //user landing page 
 const usersLandingPage = async (req, res) => {
     try {
@@ -90,6 +91,8 @@ const createShippingLabel = async (req, res) => {
     }
 };
 
+// Define a variable to store payment reference globally
+let storedPaymentReference; 
  // post my label
 const createLabelPagePost =  async(req, res) => {
 
@@ -119,7 +122,7 @@ const createLabelPagePost =  async(req, res) => {
         }
 
        // Fetch the payment details from the database
-       const payment = await Payment.findOne({ userId }).sort({ date_added: -1 });
+       const payment = await Payment.findOne({ reference:storedPaymentReference }).sort({ date_added: -1 });
        if (!payment) {
            throw new Error('Payment details not found');
        }
@@ -586,10 +589,14 @@ const makePayment = async (req, res) => {
                         userId: req.session.user_id
                     });
                     await payment.save();
-                    // console.log('Payment saved:', payment);
+                    console.log('Payment saved:', payment);
+
+                     // Store payment reference globally
+                     storedPaymentReference = responseData.data.reference;
+                     
                     // Send the authorization URL back to the client
                     res.json(responseData);
-               
+                   
                 } catch (error) {
                     console.error('Error processing payment response:', error);
                     res.status(500).json({ error: 'An error occurred while processing payment response' });

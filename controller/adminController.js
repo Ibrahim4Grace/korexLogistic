@@ -793,6 +793,8 @@ const createNewLabel =  (req, res) => {
     res.render('admin/createNewLabel', {admin, newTrackingID});
 };
 
+// Define a variable to store payment reference globally
+let storedPaymentReference; 
 const createNewLabelPost = async (req, res) => {
 
     const { senderName, senderEmail, senderNumber, selectMembership, senderAddress, senderCity, senderState, shippingMethod, recipientName, recipientEmail, recipientNumber, recipientAddress, recipientCity, recipientState,shippingAmount, trackingID } = req.body;
@@ -835,12 +837,12 @@ const createNewLabelPost = async (req, res) => {
           newTrackingID = await generateTrackingID(); // Generate a new tracking number
       }
 
-       // Fetch the payment details from the database
-       const payment = await Payment.findOne({ userId }).sort({ date_added: -1 });
-       if (!payment) {
-           throw new Error('Payment details not found');
-       }
-       console.log('Payment retrieved:', payment);
+           // Fetch the payment details from the database
+           const payment = await Payment.findOne({ reference:storedPaymentReference }).sort({ date_added: -1 });
+           if (!payment) {
+               throw new Error('Payment details not found');
+           }
+           console.log('Payment retrieved:', payment);
 
   
         const newShippingLabel = new shippingLabel({
@@ -1846,10 +1848,14 @@ const makePayment = async (req, res) => {
                         userId: req.session.user_id
                     });
                     await payment.save();
-                    // console.log('Payment saved:', payment);
+                    console.log('Payment saved:', payment);
+
+                     // Store payment reference globally
+                     storedPaymentReference = responseData.data.reference;
+                     
                     // Send the authorization URL back to the client
                     res.json(responseData);
-               
+                   
                 } catch (error) {
                     console.error('Error processing payment response:', error);
                     res.status(500).json({ error: 'An error occurred while processing payment response' });

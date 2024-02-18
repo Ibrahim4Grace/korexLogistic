@@ -140,7 +140,6 @@ const contactPagePost = async (req, res) => {
                 req.flash('error', 'An error occurred while sending your message');
             } else {
                 console.log('Email sent:', info.response);
-                req.flash('success_msg', 'Message successfully sent.');
             }
             res.status(200).redirect('/');
         });
