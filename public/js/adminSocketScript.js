@@ -6,9 +6,17 @@ const socket = io('/chat');
 socket.emit('joinRoom', 'adminRoom');
 
 
+// setTimeout(() => {
+//  // Assuming you have the adminId available, emit the storeUserId event
+// socket.emit('storeUserId', { userId: socket.id, room: 'adminRoom'});
+// }, 1000);  
+
+
 setTimeout(() => {
- // Assuming you have the adminId available, emit the storeUserId event
-socket.emit('storeUserId', { userId: socket.id, room: 'adminRoom'});
+  const userId = socket.id;
+  const room = 'adminRoom';
+  socket.emit('storeUserId', { userId: socket.id, room: 'adminRoom'});
+  console.log(`User ID (${userId}) stored in room ${room}`);
 }, 1000);  
 
 
